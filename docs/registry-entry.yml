@@ -19,8 +19,8 @@
 # category: skill
 # tarball: https://github.com/Yanshi-Robotics/yanshifu-plugin-cn/releases/latest/download/yanshifu-plugin-cn.tgz
 # description:
-#   en: 'Answers SO-101 questions from four Yanshi Robotics handbooks: bill of materials with reference prices, whether the local machine can run each policy, assembly and slicing steps, and how far the bundled handbooks reach.'
-#   zh: '只答《偃师傅的 SO-101 落地指南》等四份资料里的事：物料清单与参考价、本机能不能跑各个模型、装配与切片步骤、资料更新到第几集。'
+#   en: 'Two skills for the Let''s Build Robots SO-101 course: one reads the learner''s project files (environment, calibration, teleop logs, camera config, datasets, checkpoints), reports which lesson they are on and what to do next; the other answers questions from four handbooks.'
+#   zh: '两个技能：yanshifu 读学员的项目产物判断他做到哪一集并给下一步；ask 只答《偃师傅的 SO-101 落地指南》等四份资料里的问题。'
 #
 # 两处刻意的写法：
 # 1. `tarball:` 指到 release 资产，资产名**不带版本号**，所以 `latest/download/` 不会在下次发版时 404。

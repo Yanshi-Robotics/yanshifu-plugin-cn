@@ -1,7 +1,7 @@
 {
   "_comment": "知识源。sourceRoot 相对本仓根目录，也可以用环境变量 YANSHIFU_SOURCE_DIR 覆盖（绝对或相对都行）。",
   "sourceRoot": "../../Lets-Build-Robots/S1-LeRobot-SO101/资料群共享/源文件",
-  "knowledgeDir": "skills/yanshifu/knowledge",
+  "knowledgeDir": "skills/ask/knowledge",
   "sources": [
     {
       "src": "偃师傅的SO101落地指南.md",
