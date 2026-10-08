@@ -1,0 +1,14 @@
+# yanshifu bundle：把包内的 skills/yanshifu 挂到 ctx.skills 上。
+#
+# 纯技能包，不含宿主代码：只加一个文件系统技能提供方，把 bundledSkillDir 指到本包
+# 安装后的 skills/ 目录。路径从 DSH profile 的 Loader baseUrl 解析出本包的 package.json，
+# ⛔ 不要写成拼在 baseUrl 后面的相对路径 —— 那样在 pnpm 的软链布局下会指错地方。
+#
+# 形态照 @tt-a1i/archify-dsh 抄的（同为本机已装、已验证可用的纯技能包）。
+- insert:
+    - id: yanshifu-skill-filesystem
+      name: '@deepseek-ai/dsh-skill-filesystem'
+      config:
+        providerName: yanshifu-plugin
+        includeDefaultRoots: false
+        bundledSkillDir: !!js process.getBuiltinModule('node:path').join(process.getBuiltinModule('node:path').dirname(process.getBuiltinModule('node:module').createRequire(baseUrl).resolve('yanshifu/package.json')), 'skills')

@@ -1,0 +1,31 @@
+{
+  "_comment": "知识源。sourceRoot 相对本仓根目录，也可以用环境变量 YANSHIFU_SOURCE_DIR 覆盖（绝对或相对都行）。",
+  "sourceRoot": "../../Lets-Build-Robots/S1-LeRobot-SO101/资料群共享/源文件",
+  "knowledgeDir": "skills/yanshifu/knowledge",
+  "sources": [
+    {
+      "src": "偃师傅的SO101落地指南.md",
+      "dest": "so101-guide.md",
+      "title": "偃师傅的 SO-101 落地指南",
+      "scope": "主角。Season 1 的链接表、套件与价格、BOM、电脑配置、模型硬件、装配清单、3D 打印、答疑、追更，附 EP Review。随每集更新。"
+    },
+    {
+      "src": "偃师傅的电脑体检指南.md",
+      "dest": "pc-checkup.md",
+      "title": "偃师傅的电脑体检指南",
+      "scope": "lerobot-doctor 一键体检怎么跑、报告怎么看。配置问题查完硬件后要动手验环境时用它。"
+    },
+    {
+      "src": "GitHub注册指南.md",
+      "dest": "github-signup.md",
+      "title": "GitHub 注册指南",
+      "scope": "通用工具速查：注册、装 Git、克隆。与节目无关，谁都能用。"
+    },
+    {
+      "src": "DeepSeek-Harness安装指南.md",
+      "dest": "dsh-install.md",
+      "title": "DeepSeek Harness 安装指南",
+      "scope": "通用工具速查：装 DeepSeek Harness。与节目无关，谁都能用。"
+    }
+  ]
+}
