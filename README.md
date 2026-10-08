@@ -1,16 +1,16 @@
 # yanshifu
 
-[![DeepSeek Harness bundle](https://img.shields.io/badge/dsh-plugin-bundle-blue)](#quick-start)
+[![DeepSeek Harness 插件包](https://img.shields.io/badge/dsh-plugin-bundle-blue)](#快速开始)
 [![Node](https://img.shields.io/badge/node-%5E22.19%20%7C%7C%20%3E%3D24-lightgrey)](package.json)
 [![License: MIT](https://img.shields.io/badge/license-MIT-green)](LICENSE)
 
-English · [简体中文](docs/i18n/zh/README.md)
+> **English** — This repository is the Chinese edition, written for Chinese-speaking users; the plugin answers in Chinese. The English edition is `Yanshi-Robotics/yanshifu-plugin`. It is coming soon and is not open yet.
 
-A DeepSeek Harness plugin that adds **偃师傅八号**, an assistant that answers from four Yanshi Robotics handbooks: the SO-101 build guide, the PC checkup guide, the GitHub signup guide, and the DeepSeek Harness install guide.
+一个 DeepSeek Harness 插件，装上就多一个**偃师傅八号**：只答四份资料里的事，就是《偃师傅的 SO-101 落地指南》《偃师傅的电脑体检指南》《GitHub 注册指南》《DeepSeek Harness 安装指南》。
 
-## Quick Install Prompt
+## Quick Install Prompt · 安装用的提示词
 
-Paste this into a DeepSeek Harness session and let the agent do it:
+把下面这段发给 DeepSeek Harness 里的助手，剩下的它做：
 
 ```text
 安装 yanshifu 插件，插件位于 github: Yanshi-Robotics/yanshifu-plugin-cn 中，参照要求直接安装。
@@ -21,41 +21,39 @@ https://github.com/Yanshi-Robotics/yanshifu-plugin-cn/releases/latest/download/y
 装完确认技能列表里出现 /yanshifu，并让它回答「SO-101 的 BOM 是什么」。
 ```
 
-In English: install the yanshifu plugin from `github: Yanshi-Robotics/yanshifu-plugin-cn`, following this repository's instructions; if GitHub will not fetch it, install the release tarball instead; then check that `/yanshifu` shows up in the skill list and can answer a bill-of-materials question.
+最后那句别删。这套流程真正会翻车的地方，是插件报「装好了」但技能列表里根本没有它；最后那句就是让助手先证明技能答得出来，再说装完了。
 
-The last line is the part worth keeping. The failure this flow actually hits is a plugin that reports a successful install and then never appears in the skill list, so the prompt asks the agent to prove the skill answers before calling it done.
+它背后就一条命令 `dsh plugin --profile web add <来源>`：装包、同时把这个包选成 bundle，不用手工改任何配置文件，这个插件也不需要重启。想自己动手就看下面的「快速开始」。
 
-Under the hood it is one command — `dsh plugin --profile web add <source>` — which installs the package and selects it as a bundle. Nothing has to be edited by hand, and no restart is needed for this plugin. Prefer to drive it yourself? See [Quick start](#quick-start).
+## 这是什么
 
-## Overview
+跟着《一起手搓机器人》第一季做 SO-101 的股东，问来问去就那几个问题：到底要买什么、我这台电脑够不够、这个舵机装哪条臂、校准那一步为什么过不去。答案都有，只是散在四份 PDF 里，翻起来费劲。
 
-People following the *Let's Build Robots* Season 1 series keep asking the same questions: what exactly do I have to buy, is my laptop enough, which motor goes on which arm, why does the calibration step fail. The answers exist, but they are spread across four PDFs that are painful to search.
+这个插件把四份资料收进一个技能，让助手照着资料答，而不是照着印象答。它还会读一遍你正在用的这台电脑。「我这配置够不够」这个问题因此值得问：答案对着你真实的 CPU、内存、硬盘和显卡给，不是对着通用表格给。
 
-This plugin packages those four handbooks into a skill, so the assistant answers from the text instead of from memory. It also reads the machine it runs on, which is what makes the hardware question worth asking: "is my computer enough" gets answered against your actual CPU, RAM, disk and GPU, not against a generic table.
+答案用中文，因为资料和读者都是中文的。插件本身不含宿主代码，只挂一个技能目录。
 
-Answers are in Chinese, because the handbooks and the audience are Chinese. The plugin adds no host code: it registers a skill directory and nothing else.
+## 快速开始
 
-## Quick start
-
-Install it yourself from the **Plugins** page in the Web sidebar — **Add plugin**, paste the repository, install, enable — or from a terminal:
+自己装：Web 侧栏 **Plugins** 页里 **Add plugin**，把仓库填进去，装完启用；或者命令行：
 
 ```bash
 dsh plugin --profile web add github:Yanshi-Robotics/yanshifu-plugin-cn
 ```
 
-`git` has to be on the machine, because the package is fetched from the repository. Letting the agent do it works too, but plugin-management tools are only switched on in the Creator preset, so an ordinary session runs this same command through the shell.
+机器上要有 `git`，包是直接从仓库拉的。让助手代劳也行，但管插件的工具默认只在 Creator 预设里打开，普通会话里它就是替你跑上面这条命令。
 
-If GitHub is slow or unreachable where you are, install the release tarball instead. It is 68 kB rather than a full repository clone, and it comes from GitHub's own release hosting:
+**GitHub 慢或者连不上的话**，改装 release 里的 tarball：69 kB，不用克隆整个仓库，而且是从 GitHub 自己的 release 托管上取的：
 
 ```bash
 dsh plugin --profile web add https://github.com/Yanshi-Robotics/yanshifu-plugin-cn/releases/latest/download/yanshifu-plugin-cn.tgz
 ```
 
-Prefer that over a third-party GitHub proxy site. A proxy sits in the middle of your download and can hand you different content; the tarball above comes from GitHub itself, and its checksum is published with the release.
+优先用这条，别用第三方的 GitHub 加速站：加速站夹在你和 GitHub 中间，能给你换成别的内容；上面这个包直接从 GitHub 取，校验和随 release 一起公布。
 
-**The repository name carries the language.** This one ends in `-cn` and answers in Chinese. An English edition would be published as `yanshifu-plugin-en`, so a user installs the one they want and never both.
+**仓名带语言。** 这个仓以 `-cn` 结尾，专门给中文用户；英文版是 `yanshifu-plugin`，还没开放。各装各的，不用装两个。
 
-Then ask, with or without the slash:
+然后直接问，带不带斜杠都行：
 
 ```text
 /yanshifu 机械臂要买什么？
@@ -63,64 +61,64 @@ Then ask, with or without the slash:
 /yanshifu EP10 讲了什么
 ```
 
-The skill is also model-invocable: asking "偃师傅，BOM 是什么" without naming the skill triggers it, because the description covers that ground. Writing `@yanshifu` works too — `@` is reserved for file references in the composer, so it will not autocomplete, but the name in the message is enough for the assistant to load the skill.
+技能也会自己触发：直接问「偃师傅，BOM 是什么」，不用点名也会加载，因为触发条件写在技能说明里。写 `@yanshifu` 也能用：`@` 在输入框里是引文件用的，不会补全出这个技能，但消息里有这个名字，助手就会去加载它。
 
-## What it answers
+## 它答什么
 
-- **Bill of materials** — every line of the SO-101 BOM with October 2026 reference prices, which of the three motor suffixes goes on which arm, and what to buy first if you already own some of it.
-- **Whether your computer is enough** — reads the local machine (CPU, RAM, free disk, GPU and VRAM), places it in one of the guide's four tiers, and says which policies you can run, whether training fits locally or belongs in the cloud, and which episodes to skip on your platform.
-- **Build, print and software steps** — assembly order, wiring, motor configuration, calibration, teleoperation, Cartesian control, gamepad control, slicing settings.
-- **Model selection** — ACT, SmolVLA, π₀ and π₀.₅ weights, inference memory and training memory.
-- **Progress** — how far the bundled handbooks go, plus a reminder that the video platform may already be ahead.
+- **物料清单**：SO-101 全套 BOM，2026 年 10 月的参考价，三种舵机后缀各装哪条臂；手上已经有几样时先买什么。
+- **电脑够不够**：读本机配置（CPU、内存、硬盘空余、显卡与显存），对上资料里的四档，说清能跑哪几个模型、训练放本地还是云端、哪几集在你这台机器上要跳过。
+- **装配、打印与软件步骤**：装配顺序、接线、电机配置、校准、遥操、笛卡尔控制、手柄控制、切片设置。
+- **模型选型**：ACT、SmolVLA、π₀、π₀.₅ 的权重、推理显存与训练显存。
+- **更新进度**：包里资料到第几集，并提醒视频平台可能已经更新。
 
-It declines the rest. Cost and profit accounting, suppliers and purchasing, marketplace operations, Season 2 and later, other robots, and general programming questions are outside these four handbooks, and the assistant says so rather than guessing.
+范围之外的它会直说：成本与利润、供应商与采购、橱窗运营、Season 2 及以后、别的机器人、通用编程问题，都不在这四份资料里，它不会硬答。
 
-## How it is put together
+## 里面是什么
 
 ```text
 skills/yanshifu/
-├── SKILL.md                  persona, scope, routing, wording rules
+├── SKILL.md                  人设、边界、章节路由、叫法
 ├── references/
-│   └── hardware-check.md     read-only probes per OS + the four-tier criteria
-└── knowledge/                the four handbooks, plus a generated index
+│   └── hardware-check.md     三个系统的只读探测命令 + 四档判据
+└── knowledge/                四份资料正文，加一份生成的索引
     ├── INDEX.md
     ├── SOURCES.md
     └── so101-guide.md · pc-checkup.md · github-signup.md · dsh-install.md
 ```
 
-`cordis.patch.yml` mounts `@deepseek-ai/dsh-skill-filesystem` with `bundledSkillDir` pointing at the packaged `skills/` directory, so the whole plugin is a skill provider with no host logic.
+`cordis.patch.yml` 挂的是 `@deepseek-ai/dsh-skill-filesystem`，把 `bundledSkillDir` 指向包内的 `skills/`，所以整个插件就是一个技能提供方，没有宿主逻辑。
 
-## Maintaining the knowledge
+## 资料怎么更新
 
-The handbooks live in a private archive that only the maintainer has, and they grow every episode. The bundled copies are therefore a snapshot, and `SOURCES.md` records when it was taken and how far the guide goes.
+四份资料的正本在维护者手上的资料库里，每播一集就补一点。包里的正文是**快照**，`SOURCES.md` 记着同步时间和资料的最后一集。
 
-Refresh the snapshot from a checkout that sits next to the archive:
+从挨着资料库的克隆里重新同步：
 
 ```bash
 npm run sync
 ```
 
-Point it somewhere else with the environment variable:
+资料在别处时用环境变量指过去：
 
 ```bash
 YANSHIFU_SOURCE_DIR=/path/to/源文件 npm run sync
 ```
 
-Verify that the packaged copies still match the source, for example in CI:
+校验包里的正文是否还和源一致（可以放进 CI）：
 
 ```bash
 npm run sync:check
 ```
 
-Source files are only ever read. The script normalizes images into `〔配图：file.jpg〕` placeholders and drops layout `<div>` wrappers, because the 5.6 MB of images stay out of the package; the prose itself is copied verbatim.
+脚本对源文件只读。图片换成 `〔配图：文件名.jpg〕` 占位、排版用的 `<div>` 只留内容，因为 5.6 MB 素材不进包；文字本身逐字照抄。
 
-## Limits
+## 已知限制
 
-- The knowledge is a snapshot, so a fresh episode needs a fresh release. That is deliberate: the assistant says which episode its own copy ends at instead of pretending to be live.
-- Images and the printable PDFs are not bundled. Answers that depend on a picture say so and point at the guide.
-- Answers are in Chinese only.
-- The plugin answers from these four handbooks. It is not a general robotics assistant and will not pretend to be one.
+- 知识是快照，出新一集要重新发一版。这是有意的：助手会说自己这份资料到第几集，不装作是实时的。
+- 不打包图片和 PDF。答案要配图时会说明，并指向资料里对应的那一节。
+- 只答中文。
+- 只答这四份资料里的事，不是通用机器人助手，也不会假装是。
 
-## License
+## 许可证
 
-MIT — see [LICENSE](LICENSE).
+MIT，见 [LICENSE](LICENSE)。
