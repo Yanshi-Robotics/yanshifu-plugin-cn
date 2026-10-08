@@ -18,13 +18,31 @@
 
 ## 快速开始
 
-在 Web 侧栏的 **Plugins** 页装：**Add plugin**，填 `yanshifu`，装完启用。
+让 DeepSeek Harness 里的助手帮你装，把这句话发给它：
 
-命令行同一条：
+```text
+安装 yanshifu 插件，插件位于 github: Yanshi-Robotics/yanshifu-plugin-cn 中，参照要求直接安装。
+```
+
+它要能用命令行。管插件的工具默认只在 Creator 预设里打开，所以普通会话里它会自己跑下面那条命令，结果一样。
+
+也可以自己装。Web 侧栏 **Plugins** 页里 **Add plugin**，把仓库填进去，装完启用；或者命令行：
 
 ```bash
-dsh plugin --profile web add yanshifu
+dsh plugin --profile web add github:Yanshi-Robotics/yanshifu-plugin-cn
 ```
+
+两种方式都要机器上有 `git`，包是直接从仓库拉的。
+
+**GitHub 慢或者连不上的话**，改装 release 里的 tarball：68 kB，不用克隆整个仓库，而且是从 GitHub 自己的 release 托管上取的：
+
+```bash
+dsh plugin --profile web add https://github.com/Yanshi-Robotics/yanshifu-plugin-cn/releases/latest/download/yanshifu-plugin-cn.tgz
+```
+
+优先用这条，别用第三方的 GitHub 加速站：加速站夹在你和 GitHub 中间，能给你换成别的内容；上面这个包直接从 GitHub 取，校验和随 release 一起公布。
+
+**仓名带语言。** 这个仓以 `-cn` 结尾，答中文；英文版会是 `yanshifu-plugin-en`。各装各的，不用装两个。
 
 然后直接问，带不带斜杠都行：
 

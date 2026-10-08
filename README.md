@@ -18,13 +18,31 @@ Answers are in Chinese, because the handbooks and the audience are Chinese. The 
 
 ## Quick start
 
-Install it into your DeepSeek Harness profile from the **Plugins** page in the Web sidebar: **Add plugin**, enter `yanshifu`, install, enable.
+Ask your DeepSeek Harness agent to install it, and paste this:
 
-The same thing from a terminal:
+```text
+安装 yanshifu 插件，插件位于 github: Yanshi-Robotics/yanshifu-plugin-cn 中，参照要求直接安装。
+```
+
+The agent needs the shell for this. Plugin-management tools are only switched on in the Creator preset, so in an ordinary session it will run the command below by hand — same result.
+
+Or install it yourself. From the **Plugins** page in the Web sidebar: **Add plugin**, paste the repository, install, enable. From a terminal:
 
 ```bash
-dsh plugin --profile web add yanshifu
+dsh plugin --profile web add github:Yanshi-Robotics/yanshifu-plugin-cn
 ```
+
+Either way, `git` has to be on the machine; the package is fetched straight from the repository.
+
+If GitHub is slow or unreachable where you are, install the release tarball instead. It is 68 kB rather than a full repository clone, and it comes from GitHub's own release hosting:
+
+```bash
+dsh plugin --profile web add https://github.com/Yanshi-Robotics/yanshifu-plugin-cn/releases/latest/download/yanshifu-plugin-cn.tgz
+```
+
+Prefer that over a third-party GitHub proxy site. A proxy sits in the middle of your download and can hand you different content; the tarball above comes from GitHub itself, and its checksum is published with the release.
+
+**The repository name carries the language.** This one ends in `-cn` and answers in Chinese. An English edition would be published as `yanshifu-plugin-en`, so a user installs the one they want and never both.
 
 Then ask, with or without the slash:
 

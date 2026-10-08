@@ -1,6 +1,6 @@
 {
-  "name": "yanshifu",
-  "version": "0.1.0",
+  "name": "yanshifu-plugin-cn",
+  "version": "0.1.1",
   "description": "偃师傅八号：偃师傅的 AI 分身。把《偃师傅的 SO-101 落地指南》等四份资料做成一个能问的助手——物料清单、电脑配置够不够、3D 打印、装配接线、模型选型、更新进度。",
   "type": "module",
   "license": "MIT",
@@ -30,10 +30,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Yanshi-Robotics/yanshifu.git"
+    "url": "git+https://github.com/Yanshi-Robotics/yanshifu-plugin-cn.git"
   },
-  "homepage": "https://github.com/Yanshi-Robotics/yanshifu",
-  "bugs": "https://github.com/Yanshi-Robotics/yanshifu/issues",
+  "homepage": "https://github.com/Yanshi-Robotics/yanshifu-plugin-cn",
+  "bugs": "https://github.com/Yanshi-Robotics/yanshifu-plugin-cn/issues",
   "publishConfig": {
     "access": "public"
   },

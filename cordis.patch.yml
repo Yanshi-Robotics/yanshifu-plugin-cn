@@ -11,4 +11,4 @@
       config:
         providerName: yanshifu-plugin
         includeDefaultRoots: false
-        bundledSkillDir: !!js process.getBuiltinModule('node:path').join(process.getBuiltinModule('node:path').dirname(process.getBuiltinModule('node:module').createRequire(baseUrl).resolve('yanshifu/package.json')), 'skills')
+        bundledSkillDir: !!js process.getBuiltinModule('node:path').join(process.getBuiltinModule('node:path').dirname(process.getBuiltinModule('node:module').createRequire(baseUrl).resolve('yanshifu-plugin-cn/package.json')), 'skills')
