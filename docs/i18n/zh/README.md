@@ -8,6 +8,23 @@
 
 一个 DeepSeek Harness 插件，装上就多一个**偃师傅八号**：只答四份资料里的事，就是《偃师傅的 SO-101 落地指南》《偃师傅的电脑体检指南》《GitHub 注册指南》《DeepSeek Harness 安装指南》。
 
+## Quick Install Prompt · 安装用的提示词
+
+把下面这段发给 DeepSeek Harness 里的助手，剩下的它做：
+
+```text
+安装 yanshifu 插件，插件位于 github: Yanshi-Robotics/yanshifu-plugin-cn 中，参照要求直接安装。
+
+如果 github 拉不动，改装 release tarball：
+https://github.com/Yanshi-Robotics/yanshifu-plugin-cn/releases/latest/download/yanshifu-plugin-cn.tgz
+
+装完确认技能列表里出现 /yanshifu，并让它回答「SO-101 的 BOM 是什么」。
+```
+
+最后那句别删。这套流程真正会翻车的地方，是插件报「装好了」但技能列表里根本没有它；最后那句就是让助手先证明技能答得出来，再说装完了。
+
+它背后就一条命令 `dsh plugin --profile web add <来源>`：装包、同时把这个包选成 bundle，不用手工改任何配置文件，这个插件也不需要重启。想自己动手就看下面的「快速开始」。
+
 ## 这是什么
 
 跟着《一起手搓机器人》第一季做 SO-101 的股东，问来问去就那几个问题：到底要买什么、我这台电脑够不够、这个舵机装哪条臂、校准那一步为什么过不去。答案都有，只是散在四份 PDF 里，翻起来费劲。
@@ -18,21 +35,13 @@
 
 ## 快速开始
 
-让 DeepSeek Harness 里的助手帮你装，把这句话发给它：
-
-```text
-安装 yanshifu 插件，插件位于 github: Yanshi-Robotics/yanshifu-plugin-cn 中，参照要求直接安装。
-```
-
-它要能用命令行。管插件的工具默认只在 Creator 预设里打开，所以普通会话里它会自己跑下面那条命令，结果一样。
-
-也可以自己装。Web 侧栏 **Plugins** 页里 **Add plugin**，把仓库填进去，装完启用；或者命令行：
+自己装：Web 侧栏 **Plugins** 页里 **Add plugin**，把仓库填进去，装完启用；或者命令行：
 
 ```bash
 dsh plugin --profile web add github:Yanshi-Robotics/yanshifu-plugin-cn
 ```
 
-两种方式都要机器上有 `git`，包是直接从仓库拉的。
+机器上要有 `git`，包是直接从仓库拉的。让助手代劳也行，但管插件的工具默认只在 Creator 预设里打开，普通会话里它就是替你跑上面这条命令。
 
 **GitHub 慢或者连不上的话**，改装 release 里的 tarball：68 kB，不用克隆整个仓库，而且是从 GitHub 自己的 release 托管上取的：
 

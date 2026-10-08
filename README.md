@@ -8,6 +8,25 @@ English · [简体中文](docs/i18n/zh/README.md)
 
 A DeepSeek Harness plugin that adds **偃师傅八号**, an assistant that answers from four Yanshi Robotics handbooks: the SO-101 build guide, the PC checkup guide, the GitHub signup guide, and the DeepSeek Harness install guide.
 
+## Quick Install Prompt
+
+Paste this into a DeepSeek Harness session and let the agent do it:
+
+```text
+安装 yanshifu 插件，插件位于 github: Yanshi-Robotics/yanshifu-plugin-cn 中，参照要求直接安装。
+
+如果 github 拉不动，改装 release tarball：
+https://github.com/Yanshi-Robotics/yanshifu-plugin-cn/releases/latest/download/yanshifu-plugin-cn.tgz
+
+装完确认技能列表里出现 /yanshifu，并让它回答「SO-101 的 BOM 是什么」。
+```
+
+In English: install the yanshifu plugin from `github: Yanshi-Robotics/yanshifu-plugin-cn`, following this repository's instructions; if GitHub will not fetch it, install the release tarball instead; then check that `/yanshifu` shows up in the skill list and can answer a bill-of-materials question.
+
+The last line is the part worth keeping. The failure this flow actually hits is a plugin that reports a successful install and then never appears in the skill list, so the prompt asks the agent to prove the skill answers before calling it done.
+
+Under the hood it is one command — `dsh plugin --profile web add <source>` — which installs the package and selects it as a bundle. Nothing has to be edited by hand, and no restart is needed for this plugin. Prefer to drive it yourself? See [Quick start](#quick-start).
+
 ## Overview
 
 People following the *Let's Build Robots* Season 1 series keep asking the same questions: what exactly do I have to buy, is my laptop enough, which motor goes on which arm, why does the calibration step fail. The answers exist, but they are spread across four PDFs that are painful to search.
@@ -18,21 +37,13 @@ Answers are in Chinese, because the handbooks and the audience are Chinese. The 
 
 ## Quick start
 
-Ask your DeepSeek Harness agent to install it, and paste this:
-
-```text
-安装 yanshifu 插件，插件位于 github: Yanshi-Robotics/yanshifu-plugin-cn 中，参照要求直接安装。
-```
-
-The agent needs the shell for this. Plugin-management tools are only switched on in the Creator preset, so in an ordinary session it will run the command below by hand — same result.
-
-Or install it yourself. From the **Plugins** page in the Web sidebar: **Add plugin**, paste the repository, install, enable. From a terminal:
+Install it yourself from the **Plugins** page in the Web sidebar — **Add plugin**, paste the repository, install, enable — or from a terminal:
 
 ```bash
 dsh plugin --profile web add github:Yanshi-Robotics/yanshifu-plugin-cn
 ```
 
-Either way, `git` has to be on the machine; the package is fetched straight from the repository.
+`git` has to be on the machine, because the package is fetched from the repository. Letting the agent do it works too, but plugin-management tools are only switched on in the Creator preset, so an ordinary session runs this same command through the shell.
 
 If GitHub is slow or unreachable where you are, install the release tarball instead. It is 68 kB rather than a full repository clone, and it comes from GitHub's own release hosting:
 
