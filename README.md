@@ -1,7 +1,7 @@
 # yanshifu
 
 [![DeepSeek Harness bundle](https://img.shields.io/badge/dsh-plugin-bundle-blue)](#quick-start)
-[![Node](https://img.shields.io/badge/node-%3E%3D20-lightgrey)](package.json)
+[![Node](https://img.shields.io/badge/node-%5E22.19%20%7C%7C%20%3E%3D24-lightgrey)](package.json)
 [![License: MIT](https://img.shields.io/badge/license-MIT-green)](LICENSE)
 
 English · [简体中文](docs/i18n/zh/README.md)
