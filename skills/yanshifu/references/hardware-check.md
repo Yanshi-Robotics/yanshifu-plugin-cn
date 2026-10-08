@@ -23,21 +23,27 @@
 | 查什么 | 命令 |
 |---|---|
 | 系统版本 | `cat /etc/os-release \| head -3` |
-| CPU | `lscpu \| grep -m1 'Model name'` · 核数 `nproc` |
+| CPU 型号 | `lscpu \| grep -m1 'Model name'` |
+| CPU 物理核数 | `lscpu -p=CORE,SOCKET \| grep -v '^#' \| sort -u \| wc -l` |
 | 内存 | `free -h \| awk '/^Mem:/{print $2}'` |
 | 硬盘空余 | `df -h "$HOME" \| tail -1` |
 | 显卡与显存 | `nvidia-smi --query-gpu=name,memory.total,driver_version --format=csv,noheader` |
 | 没装 NVIDIA 驱动时 | `lspci \| grep -Ei 'vga\|3d'` |
+
+⚠️ CPU 一律按**物理核**算，资料的判据写的就是物理核。⛔ 别用 `nproc`——它给的是线程数（超线程会把 8 核报成 16），照它判会把 4 核的机器错放进 8 核那一档。
 
 **macOS**
 
 | 查什么 | 命令 |
 |---|---|
 | 系统版本 | `sw_vers -productVersion` |
-| 芯片 | `sysctl -n machdep.cpu.brand_string`（Apple Silicon 会打出 `Apple M…`）· 核数 `sysctl -n hw.ncpu` |
+| 芯片 | `sysctl -n machdep.cpu.brand_string`（Apple Silicon 会打出 `Apple M…`） |
+| CPU 物理核数 | `sysctl -n hw.physicalcpu` |
 | 内存 | `sysctl -n hw.memsize`（字节，除 1073741824 得 GB） |
 | 硬盘空余 | `df -h "$HOME" \| tail -1` |
 | 显卡 | `system_profiler SPDisplaysDataType \| grep -E 'Chipset\|VRAM\|Metal'` |
+
+⚠️ 同样按物理核算：`hw.ncpu` 是线程数，别用它。
 
 **Windows（PowerShell）**
 
