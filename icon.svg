@@ -1,0 +1,26 @@
+<svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- yanshifu 插件图标：品牌蓝底 + 偃师造物的机械臂字形。
+       字形与站仓 public/favicon.svg 的 #arm 同源（24 单位坐标，包围盒中心约 12.5,13.3），
+       这里放大居中并改成白描边，因为插件卡片有自己的底色，站上那套明暗反色 halo 用不上。 -->
+  <defs>
+    <linearGradient id="bg" x1="18" y1="0" x2="18" y2="36" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#3f8ae6" />
+      <stop offset="1" stop-color="#0b64d0" />
+    </linearGradient>
+    <g id="arm" fill="none" stroke="#ffffff" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M3.5 21h12" />
+      <path d="M8 21v-3.4" />
+      <circle cx="8" cy="15.6" r="2" />
+      <path d="m9.5 14.2 4.4-4.4" />
+      <circle cx="15" cy="8.7" r="1.5" />
+      <path d="M16.5 8.7h1.8" />
+      <path d="M18.3 5.6v6.2" />
+      <path d="M18.3 5.6h3.2" />
+      <path d="M18.3 11.8h3.2" />
+    </g>
+  </defs>
+  <rect width="36" height="36" rx="8" fill="url(#bg)" />
+  <g transform="translate(18 18) scale(1.12) translate(-12.5 -13.3)">
+    <use href="#arm" />
+  </g>
+</svg>

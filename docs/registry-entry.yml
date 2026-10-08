@@ -1,0 +1,30 @@
+# 精选表条目（提交用的那一个文件）
+#
+# DSH 的插件市场（dsh-market）只允许从精选表收录的来源安装。要进市场，先把这个文件
+# 以 PR 的形式加到 https://github.com/awesome-dsh-plugin/awesome-dsh-plugin 的
+# `data/plugins/` 下，文件名必须是 `Yanshi-Robotics__yanshifu-plugin-cn.yml`（owner__repo）。
+#
+# 收录门槛（2026-10-08 核过 contributing.md）：
+#   ✅ package.json 声明 dsh.bundle manifest           —— 本仓有
+#   ✅ 根目录有 cordis.patch.yml                        —— 本仓有
+#   ✅ 真实可用的代码（不是占位仓 / 纯 README 仓）        —— 本仓有
+#   ✅ 仓库加了 dsh-plugin topic                        —— 本仓已加
+#   ✅ 描述只说功能、不带营销词、且与代码一致             —— 见下
+#   ⏳ 仓库创建满 1 天（CI 自动查）                      —— 本仓 2026-10-08 建，10-09 起才能提
+#
+# 下面这段就是要提交的内容，去掉注释行后原样放进那个 yml：
+#
+# url: https://github.com/Yanshi-Robotics/yanshifu-plugin-cn
+# name: Yanshi-Robotics/yanshifu-plugin-cn
+# category: skill
+# tarball: https://github.com/Yanshi-Robotics/yanshifu-plugin-cn/releases/latest/download/yanshifu-plugin-cn.tgz
+# description:
+#   en: 'Answers SO-101 questions from four Yanshi Robotics handbooks: bill of materials with reference prices, whether the local machine can run each policy, assembly and slicing steps, and how far the bundled handbooks reach.'
+#   zh: '只答《偃师傅的 SO-101 落地指南》等四份资料里的事：物料清单与参考价、本机能不能跑各个模型、装配与切片步骤、资料更新到第几集。'
+#
+# 两处刻意的写法：
+# 1. `tarball:` 指到 release 资产，资产名**不带版本号**，所以 `latest/download/` 不会在下次发版时 404。
+#    没有这一项时，市场会退回整仓源码下载 —— 国内拉 GitHub 源码比拉 69 KB 的包慢得多。
+# 2. `category: skill`：本仓是纯技能包（只挂一个技能目录，不含宿主代码），精选表里这一类就叫 skill。
+#
+# 提交时只加这一个文件，别手改生成出来的 README（列表由 data/plugins/*.yml 生成）。
