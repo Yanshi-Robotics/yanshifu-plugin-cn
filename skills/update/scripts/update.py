@@ -26,6 +26,7 @@ import json
 import os
 import re
 import shutil
+import subprocess
 import sys
 import tarfile
 import tempfile
@@ -34,10 +35,13 @@ import urllib.request
 from pathlib import Path
 
 REPO = "https://github.com/Yanshi-Robotics/yanshifu-plugin-cn"
+RAW = "https://raw.githubusercontent.com/Yanshi-Robotics/yanshifu-plugin-cn/main"
 TARBALL_ASSET = "yanshifu-plugin-cn.tgz"          # 资产名不带版本号，latest/download 永远有效
 KNOWLEDGE_REL = Path("skills/ask/knowledge")      # 相对插件根
 SKILLS_REL = Path("skills")
-HTTP_TIMEOUT = 20                                  # 秒；国内网络慢，但也不能挂太久
+KNOWLEDGE_FILES = ("SOURCES.md", "INDEX.md", "so101-guide.md", "pc-checkup.md",
+                   "github-signup.md", "dsh-install.md")
+HTTP_TIMEOUT = 30                                  # 秒
 MAX_TARBALL = 32 * 1024 * 1024                     # 包只有几十 KB，超过就当中毒
 
 EXIT_LATEST, EXIT_UPDATED, EXIT_UNKNOWN = 0, 10, 20
@@ -85,13 +89,35 @@ def version_key(value: str | None):
     return (nums, 0 if tail else 1)
 
 
-def http_get(url: str) -> bytes:
-    req = urllib.request.Request(url, headers={"User-Agent": "yanshifu-update"})
-    with urllib.request.urlopen(req, timeout=HTTP_TIMEOUT) as resp:
-        data = resp.read(MAX_TARBALL + 1)
+def http_get(url: str, timeout: int = HTTP_TIMEOUT) -> bytes:
+    """先试标准库，再退回系统的 curl。
+
+    2026-10-09 实测：同一个网址 curl 0.3 秒拿到，urllib 读 60 秒超时（国内网络下这条很常见）。
+    所以 curl 存在时它是可靠得多的那条路；两个都失败才认输。
+    """
+    try:
+        req = urllib.request.Request(url, headers={"User-Agent": "yanshifu-update"})
+        with urllib.request.urlopen(req, timeout=timeout) as resp:
+            data = resp.read(MAX_TARBALL + 1)
+    except (urllib.error.URLError, urllib.error.HTTPError, ValueError, OSError):
+        data = _curl_get(url, timeout)
     if len(data) > MAX_TARBALL:
         raise ValueError(f"下载内容超过 {MAX_TARBALL} 字节，不像这个插件")
     return data
+
+
+def _curl_get(url: str, timeout: int) -> bytes:
+    curl = shutil.which("curl")
+    if not curl:
+        raise OSError("标准库取不到，机器上也没有 curl")
+    result = subprocess.run(
+        [curl, "-fsSL", "--max-time", str(timeout), url],
+        capture_output=True,
+        timeout=timeout + 10,
+    )
+    if result.returncode != 0:
+        raise OSError(f"curl 失败（{result.returncode}）：{result.stderr.decode('utf-8', 'replace').strip()[:120]}")
+    return result.stdout
 
 
 def fetch_tarball(source: str | None) -> bytes | None:
@@ -185,6 +211,27 @@ def remote_from_api() -> dict | None:
         return None
     return {"source": "GitHub API", "version": (payload.get("tag_name") or "").lstrip("v") or None,
             "latest_ep": None, "synced_at": None}
+
+
+def apply_from_raw(root: Path) -> tuple[list[str], list[str]]:
+    """release 包取不到时的退路：从仓里逐文件取正文。
+
+    只适合「知识库更新」这件事——文件名固定、一共六份、加起来 130 KB 左右。
+    ⛔ 不碰技能正文（SKILL.md 与脚本），那些变了要重装插件。
+    """
+    changed, failures = [], []
+    for name in KNOWLEDGE_FILES:
+        try:
+            data = http_get(f"{RAW}/{KNOWLEDGE_REL.as_posix()}/{name}")
+        except (urllib.error.URLError, urllib.error.HTTPError, ValueError, OSError) as error:
+            failures.append(f"{name}（{type(error).__name__}）")
+            continue
+        target = root / KNOWLEDGE_REL / name
+        if target.exists() and target.read_bytes() == data:
+            continue
+        write_atomic(target, data)
+        changed.append(str(KNOWLEDGE_REL / name))
+    return changed, failures
 
 
 def safe_members(tar: tarfile.TarFile, rel: Path):
@@ -281,10 +328,15 @@ def main() -> int:
             else:
                 state = "latest" if local_key == remote_key else "behind"
 
-    applied, other = [], []
+    applied, other, failures, how = [], [], [], None
     installed_ep = None
-    if state == "behind" and args.apply and tarball:
-        applied, other = apply_tarball(tarball, root)
+    if state == "behind" and args.apply:
+        if tarball:
+            applied, other = apply_tarball(tarball, root)
+            how = "release 包"
+        else:
+            applied, failures = apply_from_raw(root)
+            how = "仓里的正文"
         installed_ep = as_int(read_frontmatter(local_sources).get("latest_ep"))
         if installed_ep is not None:
             state = "latest" if (remote.get("latest_ep") is None or installed_ep >= remote["latest_ep"]) else "behind"
@@ -294,6 +346,8 @@ def main() -> int:
         "local": {"latest_ep": local_ep, "bundle_version": local_version, "synced_at": local.get("synced_at")},
         "remote": {k: v for k, v in (remote or {}).items() if k != "tarball"},
         "applied": applied,
+        "applied_from": how,
+        "failed": failures,
         "skill_files_differ": other,
     }
     if args.json:
@@ -306,12 +360,17 @@ def main() -> int:
             print(f"最新：{ep}（版本 {remote.get('version')}，来源：{where}）")
         if applied:
             moved = f"EP{local_ep} → EP{installed_ep}" if local_ep is not None and installed_ep is not None else f"{len(applied)} 个文件"
-            print(f"✅ 已更新（{moved}）")
+            print(f"✅ 已更新（{moved}，取自{how}）")
             for name in applied:
                 print(f"   {name}")
+            if failures:
+                print(f"⚠️ 这几份没取到，本地还是旧的：{'、'.join(failures)}")
             if other:
                 print(f"⚠️ 技能本体另有 {len(other)} 个文件与最新版不同（本次没动）：{'、'.join(other[:5])}")
                 print("   想一并跟上就重装插件，见 README 的安装提示词。")
+        elif state == "behind" and args.apply:
+            print("⛔ 查到有新版，但两个来源都取不到正文（release 包与仓里的文件都不通），什么都没改。")
+            print("   网络恢复后再跑一次，或按 README 的重装命令整包更新。")
         elif state == "latest":
             print("✅ 已经是最新，什么都没改。")
         elif state == "ahead":
@@ -325,6 +384,8 @@ def main() -> int:
         return EXIT_UPDATED
     if state == "latest" or state == "ahead":
         return EXIT_LATEST
+    if state == "behind" and args.apply:
+        return EXIT_UNKNOWN      # 想装但没装上，不能报「有新版」让调用方以为好了
     return EXIT_UPDATED if state == "behind" else EXIT_UNKNOWN
 
 
