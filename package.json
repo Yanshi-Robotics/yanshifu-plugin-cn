@@ -1,6 +1,6 @@
 {
   "name": "yanshifu-plugin-cn",
-  "version": "0.4.2",
+  "version": "0.4.3",
   "description": "yanshifu：机器人开发增强插件，挂三个技能——`yanshifu` 陪学员把这一季 SO-101 做出来（先确认项目目录、读项目产物判断进度、给出下一步），`ask` 只答四份资料里的问题，`update` 把资料更新到最新一集。",
   "type": "module",
   "license": "MIT",
