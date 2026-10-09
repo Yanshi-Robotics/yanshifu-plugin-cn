@@ -1,0 +1,3 @@
+# npm pack 只看这个文件，不看 .gitignore —— Python 缓存必须在这里挡一次
+__pycache__/
+*.pyc
