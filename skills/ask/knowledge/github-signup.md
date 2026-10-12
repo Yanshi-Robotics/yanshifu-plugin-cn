@@ -7,7 +7,7 @@ GitHub 注册指南 · 偃师造物 · 2026-09-28 核对
     GitHub 官方文档「配置双因素身份验证」
   - 界面语言 Settings → Appearance → Language → 简体中文，只翻界面不翻 README 与代码：
     多份中文教程一致，2026-09-28 核
-  - 课程代码仓、体检工具仓、SO-ARM100、lerobot 四个仓库都开着 Issues、都没开 Discussions：
+  - 开源代码仓、体检工具仓、SO-ARM100、lerobot 四个仓库都开着 Issues、都没开 Discussions：
     2026-09-28 用 gh api 实测 has_issues / has_discussions
 -->
 
@@ -22,7 +22,7 @@ GitHub 注册指南 · 偃师造物 · 2026-09-28 核对
 | 名称 | 网址 | 拿它做什么 |
 |---|---|---|
 | GitHub 注册页 | https://github.com/signup | 第二节从这里开始 |
-| 偃师造物课程代码仓 | https://github.com/Yanshi-Robotics/Lets-Build-Robots-S1-SO101 | 每集用到的程序，按内容分文件夹 |
+| 偃师造物开源代码仓 | https://github.com/Yanshi-Robotics/Lets-Build-Robots-S1-SO101 | 每集用到的程序，按内容分文件夹 |
 | 偃师造物体检工具仓 | https://github.com/Yanshi-Robotics/lerobot-doctor | 一条命令体检自己的电脑跑不跑得动 |
 
 课程用到的其他仓库，在《偃师傅的 SO-101 落地指南》开头那张表里。
