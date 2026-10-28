@@ -7,7 +7,7 @@
     python3 update.py --json           # 机器可读输出（给助手用）
     python3 update.py --source <路径或网址>   # 换一个来源（本机自测用）
 
-退出码：0 已经是最新 · 10 有新版（--check 时报出，--apply 时已装好）· 20 查不到远端
+退出码：0 已经是最新 · 10 有新版（--check 时报出，--apply 时已装好）· 20 查不到远端、元数据冲突或更新失败
 
 三个来源按顺序试，任何一个通了就停：
     1. 最新的 release 包（一次拿到「最新第几集」和要装的内容）
@@ -22,6 +22,7 @@ from __future__ import annotations
 
 import argparse
 import io
+import hashlib
 import json
 import os
 import re
@@ -77,16 +78,41 @@ def as_int(value):
 
 
 def version_key(value: str | None):
-    """把版本串变成可排序的键：(数字段, 是否正式版)。没有版本号返回 None。
-
-    只在拿不到集号时用来兜底比较，所以不追求完整 semver：
-    `0.4.0` > `0.4.0-rc.1` > `0.3.0`。
-    """
-    if not value:
+    """Compare valid release versions, including SemVer prerelease identifiers."""
+    match = re.fullmatch(r"v?(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-([0-9A-Za-z.-]+))?(?:\+[0-9A-Za-z.-]+)?", value or "")
+    if not match:
         return None
-    head, _, tail = value.lstrip("v").partition("-")
-    nums = tuple(int(x) for x in re.findall(r"\d+", head)) or (0,)
-    return (nums, 0 if tail else 1)
+    pre = match[4]
+    identifiers = pre.split(".") if pre else []
+    if any(not x or (x.isdigit() and len(x) > 1 and x[0] == "0") for x in identifiers):
+        return None
+    return (tuple(map(int, match.group(1, 2, 3))), pre is None,
+            tuple((0, int(x)) if x.isdigit() else (1, x) for x in identifiers))
+
+
+def episode_key(fields):
+    value = fields.get("latest_episode") or fields.get("latest_ep")
+    match = re.fullmatch(r"(\d+)(?:-(\d+))?", str(value))
+    return (int(match[1]), int(match[2] or 0)) if match else None
+
+
+def compare_metadata(local, remote):
+    if not remote:
+        return "unknown", "查不到远端版本。"
+    lv = version_key(local.get("bundle_version") or local.get("version"))
+    rv = version_key(remote.get("version") or remote.get("bundle_version"))
+    le, re_ = episode_key(local), episode_key(remote)
+    # An integer from an older bundle identifies only the major episode.
+    if le and re_ and not (local.get("latest_episode") and remote.get("latest_episode")):
+        le, re_ = (le[0], 0), (re_[0], 0)
+    vc = (lv > rv) - (lv < rv) if lv is not None and rv is not None else None
+    ec = (le > re_) - (le < re_) if le is not None and re_ is not None else None
+    if vc is not None and ec is not None and ((vc * ec < 0) or (vc == 0 and ec != 0)):
+        return "conflict", "版本号与资料集数不一致，停止自动更新。"
+    comparison = vc if vc is not None else ec
+    if comparison is None:
+        return "unknown", "缺少可比较的版本号或集号。"
+    return ("ahead" if comparison > 0 else "behind" if comparison < 0 else "latest"), None
 
 
 def http_get(url: str, timeout: int = HTTP_TIMEOUT) -> bytes:
@@ -99,7 +125,7 @@ def http_get(url: str, timeout: int = HTTP_TIMEOUT) -> bytes:
         req = urllib.request.Request(url, headers={"User-Agent": "yanshifu-update"})
         with urllib.request.urlopen(req, timeout=timeout) as resp:
             data = resp.read(MAX_TARBALL + 1)
-    except (urllib.error.URLError, urllib.error.HTTPError, ValueError, OSError):
+    except (urllib.error.URLError, urllib.error.HTTPError, ValueError, OSError, subprocess.TimeoutExpired):
         data = _curl_get(url, timeout)
     if len(data) > MAX_TARBALL:
         raise ValueError(f"下载内容超过 {MAX_TARBALL} 字节，不像这个插件")
@@ -129,14 +155,14 @@ def fetch_tarball(source: str | None) -> bytes | None:
             return None
     try:
         return http_get(url)
-    except (urllib.error.URLError, urllib.error.HTTPError, ValueError, OSError):
+    except (urllib.error.URLError, urllib.error.HTTPError, ValueError, OSError, subprocess.TimeoutExpired):
         return None
 
 
 def open_tarball(blob: bytes) -> tarfile.TarFile | None:
     try:
         tar = tarfile.open(fileobj=io.BytesIO(blob), mode="r:gz")
-    except tarfile.TarError:
+    except (tarfile.TarError, EOFError, OSError):
         return None
     # npm 打的包所有文件都在 package/ 下；GitHub 的源码包是 <repo>-<ref>/
     prefixes = {member.name.split("/", 1)[0] for member in tar.getmembers() if "/" in member.name}
@@ -174,10 +200,14 @@ def remote_from_tarball(blob: bytes) -> dict | None:
                 if ":" in line:
                     key, _, value = line.partition(":")
                     fields[key.strip()] = value.strip()
+    tar.close()
+    if version and fields.get("bundle_version") and version != fields["bundle_version"]:
+        return None
     return {
         "source": "release 包",
         "version": fields.get("bundle_version") or version,
         "latest_ep": as_int(fields.get("latest_ep")),
+        "latest_episode": fields.get("latest_episode"),
         "synced_at": fields.get("synced_at"),
         "tarball": blob,
     }
@@ -189,7 +219,7 @@ def remote_from_sources(source: str | None) -> dict | None:
         return None
     try:
         text = http_get(url).decode("utf-8", "replace")
-    except (urllib.error.URLError, urllib.error.HTTPError, ValueError, OSError):
+    except (urllib.error.URLError, urllib.error.HTTPError, ValueError, OSError, subprocess.TimeoutExpired):
         return None
     m = re.search(r"^---\n(.*?)\n---\n", text, re.S)
     fields = {}
@@ -201,37 +231,49 @@ def remote_from_sources(source: str | None) -> dict | None:
     if not fields:
         return None
     return {"source": "仓里的 SOURCES.md", "version": fields.get("bundle_version"),
-            "latest_ep": as_int(fields.get("latest_ep")), "synced_at": fields.get("synced_at")}
+            "latest_ep": as_int(fields.get("latest_ep")),
+            "latest_episode": fields.get("latest_episode"), "synced_at": fields.get("synced_at")}
 
 
 def remote_from_api() -> dict | None:
     try:
         payload = json.loads(http_get(f"https://api.github.com/repos/Yanshi-Robotics/yanshifu-plugin-cn/releases/latest"))
-    except (urllib.error.URLError, urllib.error.HTTPError, ValueError, OSError, json.JSONDecodeError):
+    except (urllib.error.URLError, urllib.error.HTTPError, ValueError, OSError, json.JSONDecodeError, subprocess.TimeoutExpired):
         return None
     return {"source": "GitHub API", "version": (payload.get("tag_name") or "").lstrip("v") or None,
             "latest_ep": None, "synced_at": None}
 
 
-def apply_from_raw(root: Path) -> tuple[list[str], list[str]]:
-    """release 包取不到时的退路：从仓里逐文件取正文。
-
-    只适合「知识库更新」这件事——文件名固定、一共六份、加起来 130 KB 左右。
-    ⛔ 不碰技能正文（SKILL.md 与脚本），那些变了要重装插件。
-    """
-    changed, failures = [], []
-    for name in KNOWLEDGE_FILES:
-        try:
-            data = http_get(f"{RAW}/{KNOWLEDGE_REL.as_posix()}/{name}")
-        except (urllib.error.URLError, urllib.error.HTTPError, ValueError, OSError) as error:
-            failures.append(f"{name}（{type(error).__name__}）")
-            continue
+def install_knowledge(payload, root, expected):
+    """Validate the complete snapshot; install the metadata only after body verification."""
+    if set(payload) != set(KNOWLEDGE_FILES):
+        raise ValueError("资料包缺少必要文件")
+    text = payload["SOURCES.md"].decode("utf-8")
+    fields = dict(re.findall(r"^([a-z_]+):\s*([^\n]+)$", text, re.M))
+    for key, remote_key in (("bundle_version", "version"), ("latest_ep", "latest_ep"),
+                            ("latest_episode", "latest_episode")):
+        if expected.get(remote_key) is not None and str(fields.get(key)) != str(expected[remote_key]):
+            raise ValueError("下载内容与检查到的版本不一致")
+    for name, digest in re.findall(r"^\| `([^`]+)` \|.*\| `([a-f0-9]{12})` \|$", text, re.M):
+        if name in payload and hashlib.sha256(payload[name]).hexdigest()[:12] != digest:
+            raise ValueError(f"资料校验失败：{name}")
+    changed = []
+    order = [name for name in KNOWLEDGE_FILES if name != "SOURCES.md"] + ["SOURCES.md"]
+    for name in order:
         target = root / KNOWLEDGE_REL / name
-        if target.exists() and target.read_bytes() == data:
-            continue
-        write_atomic(target, data)
-        changed.append(str(KNOWLEDGE_REL / name))
-    return changed, failures
+        if not target.exists() or target.read_bytes() != payload[name]:
+            write_atomic(target, payload[name])
+            changed.append(str(KNOWLEDGE_REL / name))
+        if target.read_bytes() != payload[name]:
+            raise OSError(f"写入复核失败：{name}")
+    return changed
+
+
+def apply_from_raw(root: Path, expected) -> tuple[list[str], list[str]]:
+    # Fetch the full snapshot first; never mark a partial download as installed.
+    payload = {name: http_get(f"{RAW}/{KNOWLEDGE_REL.as_posix()}/{name}")
+               for name in KNOWLEDGE_FILES}
+    return install_knowledge(payload, root, expected), []
 
 
 def safe_members(tar: tarfile.TarFile, rel: Path):
@@ -258,27 +300,27 @@ def write_atomic(path: Path, data: bytes) -> None:
         raise
 
 
-def apply_tarball(blob: bytes, root: Path) -> tuple[list[str], list[str]]:
-    """把包里的 skills/ 覆盖到插件上。返回（更新的知识文件，变了但没动的其他文件）。"""
+def apply_tarball(blob: bytes, root: Path, expected) -> tuple[list[str], list[str]]:
+    """Install only the six knowledge files and report differing skill files."""
     tar = open_tarball(blob)
     if tar is None:
-        return [], []
-    changed_knowledge, changed_other = [], []
-    for member, rel in safe_members(tar, Path("skills")):
-        handle = tar.extractfile(member)
-        if handle is None:
-            continue
-        data = handle.read()
-        target = root / rel
-        current = target.read_bytes() if target.exists() else None
-        if current == data:
-            continue
-        if rel.parts[:2] == ("skills", "ask") and rel.parts[2:3] == ("knowledge",):
-            write_atomic(target, data)
-            changed_knowledge.append(str(rel))
-        else:
-            changed_other.append(str(rel))
-    return changed_knowledge, changed_other
+        raise ValueError("无法读取资料包")
+    payload, changed_other = {}, []
+    with tar:
+        for member, rel in safe_members(tar, Path("skills")):
+            handle = tar.extractfile(member)
+            if handle is None:
+                continue
+            data = handle.read()
+            if rel.parent == KNOWLEDGE_REL and rel.name in KNOWLEDGE_FILES:
+                if rel.name in payload:
+                    raise ValueError("资料包包含重复文件")
+                payload[rel.name] = data
+            elif rel.parts[:3] != ("skills", "ask", "knowledge"):
+                target = root / rel
+                if not target.exists() or target.read_bytes() != data:
+                    changed_other.append(str(rel))
+    return install_knowledge(payload, root, expected), changed_other
 
 
 def main() -> int:
@@ -314,36 +356,33 @@ def main() -> int:
         if remote is None:
             remote = remote_from_api()
 
-    state, tarball = "unknown", (remote or {}).get("tarball")
-    if remote and remote.get("latest_ep") is not None and local_ep is not None:
-        if local_ep > remote["latest_ep"]:
-            state = "ahead"
-        else:
-            state = "latest" if local_ep == remote["latest_ep"] else "behind"
-    elif remote and remote.get("version") and local_version:
-        local_key, remote_key = version_key(local_version), version_key(remote["version"])
-        if local_key and remote_key:
-            if local_key > remote_key:
-                state = "ahead"
-            else:
-                state = "latest" if local_key == remote_key else "behind"
-
+    state, reason = compare_metadata(local, remote)
+    tarball = (remote or {}).get("tarball")
     applied, other, failures, how = [], [], [], None
     installed_ep = None
     if state == "behind" and args.apply:
-        if tarball:
-            applied, other = apply_tarball(tarball, root)
-            how = "release 包"
-        else:
-            applied, failures = apply_from_raw(root)
-            how = "仓里的正文"
-        installed_ep = as_int(read_frontmatter(local_sources).get("latest_ep"))
-        if installed_ep is not None:
-            state = "latest" if (remote.get("latest_ep") is None or installed_ep >= remote["latest_ep"]) else "behind"
+        try:
+            if tarball:
+                applied, other = apply_tarball(tarball, root, remote)
+                how = "release 包"
+            elif not args.source:
+                applied, other = apply_from_raw(root, remote)
+                how = "仓里的正文"
+            else:
+                raise ValueError("指定来源没有可安装的资料包")
+            installed = read_frontmatter(local_sources)
+            installed_ep = installed.get("latest_episode") or installed.get("latest_ep")
+            state, reason = compare_metadata(installed, remote)
+            if state != "latest":
+                raise ValueError("更新后版本复核未通过")
+        except (OSError, ValueError, tarfile.TarError, subprocess.TimeoutExpired) as error:
+            state, reason = "failed", "资料更新未完成；正文可能部分写入，请重试。"
+            failures.append(f"{type(error).__name__}: {error}")
 
     summary = {
         "state": state,
-        "local": {"latest_ep": local_ep, "bundle_version": local_version, "synced_at": local.get("synced_at")},
+        "reason": reason,
+        "local": {"latest_episode": local.get("latest_episode"), "latest_ep": local_ep, "bundle_version": local_version, "synced_at": local.get("synced_at")},
         "remote": {k: v for k, v in (remote or {}).items() if k != "tarball"},
         "applied": applied,
         "applied_from": how,
@@ -354,12 +393,16 @@ def main() -> int:
         print(json.dumps(summary, ensure_ascii=False, indent=2))
     else:
         where = (remote or {}).get("source", "哪儿都没查到")
-        print(f"本地：EP{local_ep}（版本 {local_version}，同步于 {local.get('synced_at')}）")
+        print(f"本地：EP{local.get('latest_episode') or local_ep}（版本 {local_version}，同步于 {local.get('synced_at')}）")
         if remote:
-            ep = f"EP{remote['latest_ep']}" if remote.get("latest_ep") is not None else "（这个来源没有集号）"
+            ep = f"EP{remote.get('latest_episode') or remote['latest_ep']}" if remote.get("latest_episode") or remote.get("latest_ep") is not None else "（这个来源没有集号）"
             print(f"最新：{ep}（版本 {remote.get('version')}，来源：{where}）")
-        if applied:
-            moved = f"EP{local_ep} → EP{installed_ep}" if local_ep is not None and installed_ep is not None else f"{len(applied)} 个文件"
+        if state in ("failed", "conflict"):
+            print(f"⛔ {reason}")
+            for failure in failures:
+                print(f"   {failure}")
+        elif applied:
+            moved = f"EP{local.get('latest_episode') or local_ep} → EP{installed_ep}" if local_ep is not None and installed_ep is not None else f"{len(applied)} 个文件"
             print(f"✅ 已更新（{moved}，取自{how}）")
             for name in applied:
                 print(f"   {name}")
@@ -380,6 +423,8 @@ def main() -> int:
         else:
             print("⛔ 查不到最新版本（网络不通或来源都不可用），没有猜。")
 
+    if failures or state in ("failed", "conflict"):
+        return EXIT_UNKNOWN
     if applied:
         return EXIT_UPDATED
     if state == "latest" or state == "ahead":

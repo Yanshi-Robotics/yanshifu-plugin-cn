@@ -1,8 +1,13 @@
-偃师傅的电脑体检指南 · 偃师造物 · 工具版本 0.1.6 · 2026-09-20 起生效
+偃师傅的电脑体检指南 · 偃师造物 · 工具版本 0.1.6 · 2026-10-16 核对
+
+<!-- 2026-10-16 核对官方 main：
+https://raw.githubusercontent.com/Yanshi-Robotics/lerobot-doctor/main/lerobot_doctor.py
+https://raw.githubusercontent.com/Yanshi-Robotics/lerobot-doctor/main/README.md
+TOOL_VERSION=0.1.6、LeRobot=0.6.1、Python=3.12；三系统入口、门槛、报告路径核对一致。报告截图沿用已有示例，本轮未安装或运行体检。 -->
 
 # 偃师傅的电脑体检指南
 
-本版对应体检工具 0.1.6，2026-09-20 起生效；群里以最新一版为准。
+对应体检工具 0.1.6，安装入口与说明于 2026 年 10 月 16 日核对；群里以最新一版为准。
 
 很多股东问：我这台电脑能不能跑 LeRobot、能不能训练、要不要换显卡。偃师傅做了一个体检工具，粘一行命令，它自己装好 LeRobot 0.6.1，真的跑一遍五个模型，最后在终端里打出一张报告，告诉你能做什么、不能做什么、哪一步得上云。不用会 Python，Windows、macOS、Linux 都行。
 
@@ -56,7 +61,7 @@ curl -LsSf https://raw.githubusercontent.com/Yanshi-Robotics/lerobot-doctor/main
 
 各级实测那张表，每个模型两格，推理一格、训练一格，符号只有四种：`✓` 实测通过；`!` 能用但有条件，比如训练要过一夜；`✗` 实测失败或者硬门槛，比如权重比显存还大，旁边写着算式；`–` 这次没测到，下面写着原因。
 
-测的五个模型比课程实际要用的多。课程只教 ACT、SmolVLA 和 π₀.₅ 这三个，体检把 Diffusion、X-VLA、WALL-OSS 也跑一遍，是因为它们的大小正好卡在几条不同的线上，多测这几个才看得出这台电脑的上限在哪。π₀ 没在里面，因为它要先登录 Hugging Face 并同意 Google 的许可。
+测的五个模型比当前训练主线用到的多。训练主线使用 ACT、SmolVLA 和 π₀.₅，体检把 Diffusion、X-VLA、WALL-OSS 也跑一遍，是因为它们的大小正好卡在几条不同的线上，多测这几个才看得出这台电脑的上限在哪。π₀ 没在里面，因为它要先登录 Hugging Face 并同意 Google 的许可。
 
 最下面「SO-101 路线」一句话，是给你这台电脑的结论。常见的三种：全流程本地；本地录数据、上云训练、拿回来本地跑；这台电脑只能做组装、校准、遥操作和录数据，训练和推理要另找机器。
 

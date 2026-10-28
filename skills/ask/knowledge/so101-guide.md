@@ -23,7 +23,22 @@
 
 视频里的表格和链接一闪就过，下单的时候对不上。这份资料把《一起手搓机器人 第一季 · 手搓机械臂 LeRobot SO-101》讲过的链接、清单和数字收在一处，方便照着买、照着打印。数字以课程正文为准；价格是 2026 年 10 月的参考价，店铺和时间不同会有出入。每一个 EP 后都会同步更新。
 
-## 一、官方与偃师造物的链接
+## 一、重要基线与链接
+
+### 复现前，先对齐版本
+
+软件基线固定为 **LeRobot 0.6.1** 和 **Python 3.12**。 先沿用节目环境，跑通后再单独尝试升级。
+
+| 基线 | 节目采用的设置 |
+|---|---|
+| 软件 | LeRobot 0.6.1，课程程序安装在仓库根目录的独立虚拟环境中 |
+| Python | Python 3.12；安装与运行使用同一个虚拟环境 |
+| 参考系统 | Ubuntu 24.04；Windows 与 macOS 使用对应命令，支持范围见电脑配置与各期指南 |
+| 机械臂与硬件文件 | SO-101，Leader 主臂与 Follower 从臂；官方硬件文件按 SO-ARM100 仓库提交 7629d2a 查找 |
+
+复现已有模型时，还要保存数据集名称与版本、相机名称与方向、模型配置和检查点。只把软件版本对齐，不能保证输入和执行设置也相同。
+
+### 常用链接
 
 课程用到的软件、硬件文件和程序分别住在五个仓库里，先认清各自管什么，再去找。
 
@@ -76,9 +91,9 @@
 
 ## 三、做好准备：打印与购买机械臂所需的一切内容
 
-三款产品已结束内测，正式上架。点开“偃师傅造机器人”的抖音主页，点击橱窗进入。**橱窗里看不到某个版本，说明该版本已售罄，1 至 3 天内补货**。以下为 2026 年 10 月的价格，以橱窗商品页为准。
+目前橱窗有四款产品，均已上架。点开“偃师傅造机器人”的抖音主页，点击橱窗进入。**橱窗里看不到某个版本，说明该版本已售罄，1 至 3 天内补货**。以下为 2026 年 10 月的价格，以橱窗商品页为准。
 
-按已有器材和学习需求选择：已经有 SO-101，选同步配件；准备自行采购电机和电子件，选全部 3D 打印件；需要视频同款可交互课件、配套知识资源和补件保障，再选完整学习套件。
+按已有器材和学习需求选择：已经有 SO-101，选同步配件；准备自行采购电机和电子件，选全部 3D 打印件；需要视频同款可交互课件、配套知识资源和补件保障，再选完整学习套件。已有从臂、需要更换柔性夹爪打印件，可以单独选择 TPU 柔性夹爪。
 
 ### 3.1 同步配件 · 29.9 元
 
@@ -159,15 +174,19 @@ BOM 是 Bill of Materials，物料清单，列出组装这一对臂要买的每�
 
 〔配图：可交互课件.png〕
 
-#### AI笔记与论文精读
+<!-- 2026-10-16：按 Jeff 提供的两张原图替换旧论文天梯图；来源与校验值见素材/商品图/2026-10-16-论文谱系/来源.json。 -->
 
-配套知识资源包含约定范围内 AI 笔记、论文精读及后续更新的永久使用权限。当前上线的人工智能笔记 271 篇、机器人笔记 218 篇，合计 **489 篇**；数量按 2026 年 10 月 12 日页面统计，同一篇的中英文不重复计数。
+<h4>人工智能思想与技术演进谱系图</h4>
+<p>沿技术路线查看论文之间的演进关系，找到方法的起点与后续发展。</p>
+〔配图：人工智能演进谱系总览.png〕
 
-AI 天梯包含 **190 篇中英双语论文精读**，可以沿技术演进关系查找论文，并结合 ACT、ALOHA 等正文实例理解方法、实验与局限。
-
-〔配图：AI天梯论文精读.png〕
-
-另外包含约定范围内的知识库、工具库与前沿研究看板，供查阅概念、工程工具和研究进展。截图展示已有页面内容，资源数量以后续更新为准。
+<h4>AI笔记与论文精读</h4>
+<p>配套知识资源包含约定范围内 AI 笔记、论文精读及后续更新的永久使用权限。当前上线的人工智能笔记 271 篇、机器人笔记 218 篇，合计 <strong>489 篇</strong>；数量按 2026 年 10 月 12 日页面统计，同一篇的中英文不重复计数。</p>
+<p>AI 天梯包含 <strong>190 篇中英双语论文精读</strong>，可以沿技术演进关系查找论文，并结合 ACT、ALOHA 等正文实例理解方法、实验与局限。</p>
+<h4>论文节点与精读入口</h4>
+<p>点击网站上的论文节点，可以查看方法介绍、原文、精读入口与上游论文。图中以 Sora 节点为例。</p>
+〔配图：论文节点详情-Sora.png〕
+<p>另外包含约定范围内的知识库、工具库与前沿研究看板，供查阅概念、工程工具和研究进展。截图展示已有页面内容，资源数量以后续更新为准。</p>
 
 **制作投入与持续更新**
 
@@ -202,82 +221,102 @@ AI 笔记、论文精读和视频同款课件的制作，历时至少 6 个月�
 
 套件不含人工答疑、代装、远程代操作或代写代码。缺件、错件和坏件通过平台订单页办理。
 
+### 3.4 TPU 柔性夹爪 · 39.9 元／套
+
+<!-- 来源：2026-10-15商品资料与正式商品主图；本轮核对日期2026-10-16。素材来源及校验值见素材/商品图/2026-10-16-柔性夹爪/来源.json。 -->
+
+〔配图：TPU柔性夹爪-首图.png〕
+
+适合已有 SO-101 Follower 从臂、需要更换柔性夹爪打印件的使用者。采用白色 TPU 打印，中空肋条结构，用于柔性夹持实验。一套共 2 件，可用于一条 Follower 从臂。
+
+| 随货物品 | 数量 | 说明 |
+|---|---|---|
+| 固定爪 | 1 件 | 包含腕部舵机安装座 |
+| 活动爪 | 1 件 | 连接原装舵盘 |
+
+需自行更换安装，复用原装舵机、舵盘及安装件。安装前先断电，核对现有夹爪结构与安装位置。
+
+仅含上述两件夹爪打印件，不含舵机、机械臂、相机、防滑垫或额外安装五金，也不附送完整学习套件的数字权益。主图为装配外观示意，图中安装五金用于展示，实际安装时复用原装件。售价以橱窗商品页为准。
+
 ## 四、偃师傅插件（测试功能）
 
-这是偃师傅做的第一个插件，还在内测：名字、命令和功能都可能改，也可能装了不好用。它是给 AI 助手加的三项技能，跟着《一起手搓机器人》第一季 SO-101 用。
+<!-- 2026-10-17 核对：
+  插件资料与技能：https://github.com/Yanshi-Robotics/yanshifu-plugin-cn
+  DSH 安装/启用界面：https://github.com/deepseek-ai/deepseek-harness/blob/master/packages/client/ui-plugin-manager/README.zh.md
+  本节与 DeepSeek-Harness安装指南.md 在出版时合为第六章；不重复维护 DSH 正文。
+-->
 
-用的前提是电脑上已经有 DeepSeek Harness，怎么装见《DeepSeek Harness 安装指南》。如果你的助手不是它，插件也支持 Codex 和 Kimi，装法看插件仓库的 README，仓库地址在本资料开头的链接表里。
+### 安装并启用偃师傅插件
 
-装完会有三个技能：`yanshifu`（看你的项目，报你做到哪一步、下一步做什么）、`ask`（在本资料和另外三份资料里查东西）、`update`（把资料更新到最新一集）。
+偃师傅插件为 DSH 提供第一季 SO-101 的资料查询和项目协作技能，目前仍是测试功能，名称、入口和行为可能随版本调整。先完成本章前面的 DSH 设置，再打开插件管理页，点击“添加插件”，输入下面的仓库地址：
 
-让助手代装，把下面这段发过去：
+https://github.com/Yanshi-Robotics/yanshifu-plugin-cn
 
-```text
-安装 yanshifu 插件，插件位于 github: Yanshi-Robotics/yanshifu-plugin-cn 中，参照要求直接安装。
+如果仓库安装失败，可以尝试发布页提供的压缩包地址；网络仍无法访问时，先检查连接，不要把下载失败当作安装完成：
 
-如果 github 拉不动，改装 release tarball：
 https://github.com/Yanshi-Robotics/yanshifu-plugin-cn/releases/latest/download/yanshifu-plugin-cn.tgz
 
-装完确认技能列表里出现 yanshifu、ask、update 三个技能，然后发一句 /yanshifu：
-它应该先问你的开源代码仓在哪个目录，报出你做到第几步，再问下一步要不要现在做。
+安装完成后点击“立即启用”。若安装时直接关闭了对话框，需要回到插件列表手动启用。随后检查技能列表中是否出现 `yanshifu`、`ask`、`update`，再输入 `/yanshifu` 发起一次查询；只有安装成功但未启用，技能仍不能使用。
+
+如果安装时出现报错，可以把下面这段连同报错交给 DSH：
+
+```text
+请参照 Yanshi-Robotics/yanshifu-plugin-cn 的 README，
+检查当前 DSH 中 yanshifu 插件的安装和启用状态。
+使用当前应用对应的配置，不要照搬旧教程中指定 web 配置的命令。
+确认 yanshifu、ask、update 三个技能可以找到，
+再说明下一步如何调用。不要操作相机、串口或电机。
 ```
 
-最后那句别删。这套流程会翻车的地方，是插件报「装好了」但技能列表里根本没有它；最后那句是让助手先证明技能答得出来，再说装完了。
+### 用三个技能获取信息
 
-自己装也行，一条命令：
+| 技能 | 适合什么时候用 | 示例 |
+|---|---|---|
+| `/yanshifu` | 结合工作区文件与已有日志，梳理课程进度和下一步 | “我准备开始 EP11，请先看配置和日志，列出还缺什么。” |
+| `/ask` | 查询插件收录的指南、硬件配置和操作要求 | “Leader 和 Follower 的电机后缀如何区分？请给出对应资料位置。” |
+| `/update` | 检查并按插件流程更新收录资料 | “检查当前资料版本与收录范围，说明是否有可用更新。” |
 
-```bash
-dsh plugin --profile web add github:Yanshi-Robotics/yanshifu-plugin-cn
+也可以使用 `/yanshifu ask` 和 `/yanshifu update`。
+
+课程中还有疑问，可以用 `/ask` 或 `/yanshifu ask` 查询本季资料；需要结合当前项目排错时，使用 `/yanshifu` 并附上命令和完整日志。描述时写清要查的对象，例如电机后缀、BOM、打印参数、相机配置或某一期的操作，并要求它给出资料位置，方便回到原文核对。
+
+插件中的资料版本可能与手中的 PDF 不同。发现缺少某一期时，先查插件版本和收录范围；`/update` 也不会自动替换本 PDF 或升级课程代码。无法连接更新来源时，继续使用已安装资料，并保留当前版本信息。
+
+### 结合日志继续开发
+
+插件提供课程背景，具体问题仍要结合当前项目判断。遇到安装、采集或训练报错时，给出命令和完整输出；遇到抓空、滑落或偏移时，补充物体、盒子、相机和机械臂的实际布置。不要只发送“运行失败”或“抓不住”。
+
+```text
+/yanshifu
+当前期数：〔填写 EP〕
+本次目标：〔填写准备完成的操作〕
+执行命令与完整报错：〔粘贴输出，先去掉密钥〕
+相关文件或日志：〔填写工作区内的实际位置〕
+现场观察：〔填写已经看到的现象，没有观察到的不要猜测〕
+
+请先结合课程资料和这些文件查找原因，列出建议改动及检查方法。
+需要修改文件或安装依赖时，先说明内容。
+涉及真实硬件的命令只写给我，由我检查并执行。
+完成后分开列出：已修改内容、已执行的软件检查、仍需现场验证的项目。
 ```
 
-GitHub 拉不动就换 release 里的压缩包，69 kB，不用克隆整个仓库：
+插件不会代替我们操作真实硬件。开启相机、占用串口、写电机配置、校准、上电和运动，都由操作者执行。插件主要服务第一季 SO-101；超出资料范围时，应先查对应项目的正式文档，避免沿用不匹配的配置。
 
-```bash
-dsh plugin --profile web add https://github.com/Yanshi-Robotics/yanshifu-plugin-cn/releases/latest/download/yanshifu-plugin-cn.tgz
-```
+## 五、节目目录说明
 
-装完打一句 `/yanshifu` 就能用，也可以直接问「偃师傅，我这步过不去」，它会自己认出来。
+### 第一季简介
 
-**它做什么**
+《一起手搓机器人》第一季用 LeRobot SO-101 主从双臂学习具身智能。Leader（主臂）由人带动示教，Follower（从臂）同步复现动作；录下的示范数据用于训练模型，再让从臂执行任务。
 
-1. 看你的项目做到哪一步：读你的开源代码仓里的文件（环境、校准、日志、相机配置、数据集、训练产物），报「你现在到 EP11，下一步是这个」。
-2. 读你的报错和日志，再下结论，不猜；把要跑的命令写清楚交给你。
-3. 查本资料和另外三份资料：BOM 与参考价、三种舵机后缀、电脑够不够跑某个模型、装配接线、切片设置、模型选型。
-4. 把资料更新到最新一集（`/update`）。
+节目从双臂组装、校准与控制开始，完成零食入盒与 ACT 训练，再逐步开展多模型实验、视觉与工具控制、策略改进和世界模型，最终挑战五层汉诺塔。各阶段按下面的模块目录展开。
 
-**它不做什么**
+ACT 底层原理分为多个独立视频，已更新 EP15-1“ACT的决策逻辑”和 EP15-2“ACT模型的训练与优化”。其余分集继续补充；目录中的其他主题为后续计划，题目与先后顺序可能调整，不代表已经发布。
 
-碰真实硬件的命令，它只写出来给你跑，自己不代跑：开相机、占串口、给电机上电都算。范围外的问题它会说不在范围内，不硬答：成本与利润、采购与供应商、橱窗运营、Season 2 及以后、别的机器人、通用编程问题。
+### 观看、资料、橱窗
 
-## 五、常见问题答疑
+在抖音、Bilibili 搜索“偃师傅造机器人”，观看“一起手搓机器人 第一季”节目。配套资料在抖音资料群中获取，相关商品在抖音主页的橱窗中查看。
 
-股东们问得最多的几个问题，EP2 里答过，这里写成能查的版本。
-
-### 具身智能机械臂和传统机械臂有什么区别
-
-传统机械臂靠编程控制：程序里要写清楚它感知到什么、遇到什么情况怎么动，比如看到墙就躲开。这一季做的是学习型机械臂：人拉着 Leader 做示范，Follower 跟着走，示范录下来喂给人工智能模型，动作是模型学出来的。所以它不需要为每个动作写程序。
-
-### 电脑要什么配置
-
-这是一个人工智能模型的项目，电脑要有一定配置，对照第二节的表找自己那一档。达到标准配置就没有问题；没有显卡的电脑，在本机跑 π₀.₅ 之前的节目都能照常做，只把训练那一步放到租来的云端显卡上，按用量付费。
-
-### 电脑不行怎么办
-
-配置很低或者很老的电脑做这个项目会吃力。偃师傅后面会出 Arduino 的项目，对电脑的要求低很多，价格也便宜很多，可以先关注追更。
-
-### 要不要科班出身
-
-不用。偃师傅学的是计算机科学和人工智能，不是机器人科班。想法加上 AI 就能做成项目，不需要先系统学完很多前置知识。
-
-## 六、这一季做什么、怎么追更
-
-### 这一季做什么
-
-这一季用 LeRobot 的开源机械臂 SO-101 做具身智能入门。SO-101 是一对臂：Leader（主臂）由人用手拉着做示范，Follower（从臂）同步复现动作。示范过程录下来就是训练数据，模型从数据里学会动作，不用为每个动作写程序。节目分五个模块：认识、备料与组装；上电、校准与控制；第一条任务，把零食放进盒子；递交物品与安全；零食吧台。最后做出来的系统能做三件事：说“把零食收起来”，机械臂把零食袋放进盒子；说“给我拿一包”，它从盒里取一包递到手上；有人伸手进工作区，运动立即暂停。
-
-### 更新节奏与追更
-
-节目每周一、三、五晚 8 点更新。B站、小红书、抖音搜“偃师傅造机器人”，YouTube 中文频道是 yanshi-robotics-chinese；四个平台各有一个合集“一起手搓机器人 第一季”，YouTube 上叫播放列表“一起手搓机器人 第一季 · 手搓机械臂 LeRobot SO-101”。前两集：EP1 适合从零学起的具身机械臂，EP2 一千多块钱就能搞定的具身机械臂。每集用到的程序在开源代码仓，仓库网址在本资料开头的链接表里。这份资料随每集更新，以资料群里最新的一版为准。
+每期程序在[第一季开源代码仓](https://github.com/Yanshi-Robotics/Lets-Build-Robots-S1-SO101)，获取方法见[GitHub与国内镜像源](#github)。本指南随节目同步更新，以资料群中的最新版本为准。课程中的其他疑问，可以使用[偃师傅插件](#agent)查询资料或结合项目日志排查。
 
 ## Appendix. EP Review
 
@@ -289,12 +328,8 @@ dsh plugin --profile web add https://github.com/Yanshi-Robotics/yanshifu-plugin-
 
 这一季做一对 SO-101 机械臂：从 3D 打印、组装、上电，到让它靠人手示范学会动作。偃师傅先讲了自己之前买步进电机臂的经历，接线、焊接、回零撞杆，最后拆了；然后转到 LeRobot，Hugging Face 的开源机器人套件，SO-101 是它的入门臂。这条路的核心是一对主从臂：人手带着主臂（Leader）做几遍，从臂（Follower）照着学，不用自己写运动学。
 
-<style>
-@page ep1-comparison { size: A4 landscape; margin: 14mm; }
-</style>
-
-<h4 style="margin-top:0;">机器人核心能力对比</h4>
-<p>步进机械臂侧重运动控制，工业机械臂侧重生产作业，人形机器人还要协调行走与平衡。本季的 SO-101 用于桌面轻物抓取，通过主从遥操作记录示范，再用数据训练模型。</p>
+<h4 style="margin:0 0 2pt;">机器人核心能力对比</h4>
+<p style="margin-bottom:0;">步进机械臂侧重运动控制，工业机械臂侧重生产作业，人形机器人还要协调行走与平衡。本季的 SO-101 用于桌面轻物抓取，通过主从遥操作记录示范，再用数据训练模型。</p>
 〔配图：机器人核心能力对比.png〕
 
 **注意事项**
@@ -307,7 +342,7 @@ dsh plugin --profile web add https://github.com/Yanshi-Robotics/yanshifu-plugin-
 
 **主要内容**
 
-先答股东们问得最多的几个问题：具身智能机械臂和传统机械臂的区别、电脑要什么配置、电脑不行怎么办、要不要科班出身（本资料第五节）。然后逐项过一遍组装一台 SO-101 要买什么、各花多少钱，就是第3.2节的 BOM。最后演示自己 3D 打印：去官方仓库找 STL、在 Bambu Studio 里切片、设树状支撑（EP2“自己 3D 打印”）。
+先答股东们问得最多的几个问题：具身智能机械臂和传统机械臂的区别、电脑要什么配置、电脑不行怎么办、要不要科班出身（电脑问题见第三、四章，其余课程问题可用第六章插件查询）。然后逐项过一遍组装一台 SO-101 要买什么、各花多少钱，就是第3.2节的 BOM。最后演示自己 3D 打印：去官方仓库找 STL、在 Bambu Studio 里切片、设树状支撑（EP2“自己 3D 打印”）。
 
 **注意事项**
 
@@ -1859,28 +1894,79 @@ lerobot-edit-dataset --repo_id "<HF_USER>/<DATASET_NAME>_v1" --root datasets/<DA
 
 判据：4 项都通过，才进入训练。发现缺项、字段错误或视频不对应，先处理并重新验收。本期到数据验收为止，不启动训练。
 
-#### EP13 预告
+### EP13 · ACT 篇：训练模型与结果检验
 
-**以下供需要提前训练与测试的股东参考**。先完成 EP12 的数据验收，再选择使用。这里只给本地训练和训练后推理的核心命令，云端训练、检查点选择与结果诊断留到下一期展开。
+<!-- EP13 步骤与命令依据：站仓 13-train-act-locally.zh.md（content_version 20）和 src/lib/lerobot-platform-commands.ts；课程代码仓 autoDL/docs/zh/README.md、autoDL/autodl_act.py、ACT-1-Pick/plot_training_curve.py；LeRobot v0.6.1 configs/train.py；AutoDL 官方 https://www.autodl.com/docs/instance_pro_api/ 与 https://www.autodl.com/docs/instance_pro_data/。核对日期 2026-10-14。只替换原 EP13 预告，EP1–EP12 保留。 -->
 
-<!-- 命令依据：站仓 src/lib/lerobot-platform-commands.ts 的 train-act / rollout-act，及 EP13、EP15 正文，2026-10-12。 -->
+<style>
+.ep13-command, .ep13-command pre, .ep13-command pre code { text-align: left; }
+.ep13-command code { hyphens: none; }
+</style>
 
-##### 本地训练
+**主要内容**
 
-在课程项目目录、已激活的 venv 中执行；训练时机械臂可以断电。先安装训练依赖，三个系统相同：
+先准备课程环境和固定的数据集，**本地训练与 AutoDL 云端训练二选一**；完成所选方式的训练后，统一检查模型和日志，最后运行 Rollout，让 Follower 自主执行 1 次任务，记录是否抓起、入盒和空手退回 Rest。
+
+**注意事项**
+
+- 股东自己的训练数据仍按 EP12 验收：九格各 15 条，合计 135 条合格示范。节目展示的现有实验使用 90 条、31,968 帧，不代表已经完成 135 条的采集目标；这 90 条全部参加训练，没有独立验证集。
+- 本地训练和结果检验不需要机械臂上电；自主试运行由操作者亲自启动，按 EP8 的规程收尾。
+- 新实验使用新的模型输出目录和日志名；恢复实验保留原目录。last 只表示最近保存的检查点。
+- Linux 已按课程环境验证；macOS、Windows 的训练和 AutoDL 真实付费流程尚未完成课程实测。
+
+#### 第一步：准备训练环境指南
+
+在课程代码仓根目录打开终端，沿用 EP3 的虚拟环境。默认目录为 .venv；自己的目录叫 venv 或使用 conda 时，将激活命令换成原来的命令，不重复创建环境。确认打印的 Python 路径属于该环境：
+
+**Linux · Ubuntu 24.04 · Bash**
+
+```bash
+source .venv/bin/activate
+python -c "import sys; print(sys.executable)"
+```
+
+**macOS · Apple Silicon · zsh**
+
+```bash
+source .venv/bin/activate
+python -c "import sys; print(sys.executable)"
+```
+
+**Windows 11 · PowerShell 7.3 或更新版本**
+
+```powershell
+.\.venv\Scripts\Activate.ps1
+python -c "import sys; print(sys.executable)"
+```
+
+再安装固定版本的训练依赖，三个系统使用同一条命令：
 
 ```bash
 python -m pip install "lerobot[training]==0.6.1"
 ```
 
-将 `<HF_USER>` 和 `<DATASET_NAME>` 替换为 EP12 使用的值，名称不带 `_v1`，命令会加上后缀。输入必须是已验收的固定版本。Linux 与 Windows 默认使用 NVIDIA CUDA，Apple Silicon macOS 使用 mps；后端不可用时改为 cpu，速度会慢。输出目录必须尚未存在；新实验换新目录，并在推理时同步修改模型路径。
+准备：EP12 的固定训练目录已经验收。将后续命令的 `<DATASET_NAME>` 换成原始集名称，不带 _v1，命令会补上后缀；例如原始集为 so101_snack_in_box，训练时读取 so101_snack_in_box_v1。复现节目中的 90 条实验时，名称改为 exp1_snack_into_box。
+
+判据：Python 路径正确，依赖安装完成，固定数据目录存在。每次新开终端都先激活同一个环境。后续所有命令都在代码仓根目录执行。Linux、macOS 的反斜杠后直接换行；Windows 长命令显示折行时，不手动插入回车。
+
+#### 第二步：选择训练方式指南
+
+**下面两种训练方式任选一种，不需要依次都做**。选择本地训练时，在自己的电脑上训练；选择云端训练时，将同一份固定数据上传到 AutoDL，训练结束后取回模型。完成所选方式后，直接进入第三步检查训练结果。
+
+##### 本地训练
+
+本地训练直接读取 datasets 下的固定版本，命令中的 local/ 是数据集标识，不需要 Hugging Face Token，也不上传数据。输出目录必须尚未存在；若已存在，继续原实验用下方的恢复命令，新实验则同时更换输出目录、实验名和日志名。
+
+Linux 与 Windows 使用 CUDA，Apple Silicon macOS 使用 mps；先确认对应后端可用。Windows 的 PyTorch 需按电脑配置要求安装支持 CUDA 的版本。后端不可用时可将设备改为 cpu，训练会更慢。
 
 **Linux · Ubuntu 24.04 · Bash**
 
 ```bash
+python -c "from pathlib import Path; Path('outputs/logs').mkdir(parents=True, exist_ok=True)"
+set -o pipefail
 lerobot-train \
   --policy.type=act \
-  --dataset.repo_id="<HF_USER>/<DATASET_NAME>_v1" \
+  --dataset.repo_id="local/<DATASET_NAME>_v1" \
   --dataset.root=datasets/<DATASET_NAME>_v1 \
   --output_dir=outputs/train/act_snack_in_box \
   --job_name=act_snack_in_box \
@@ -1888,19 +1974,24 @@ lerobot-train \
   --policy.push_to_hub=false \
   --steps=100000 \
   --batch_size=8 \
+  --num_workers=4 \
+  --seed=1000 \
+  --policy.use_amp=false \
   --save_freq=20000 \
   --log_freq=200 \
   --wandb.enable=false \
   --wandb.project=lets-build-robots-s1 \
-  --wandb.disable_artifact=true
+  --wandb.disable_artifact=true 2>&1 | tee -a outputs/logs/act_snack_in_box.log
 ```
 
 **macOS · Apple Silicon · zsh**
 
 ```bash
+python -c "from pathlib import Path; Path('outputs/logs').mkdir(parents=True, exist_ok=True)"
+set -o pipefail
 lerobot-train \
   --policy.type=act \
-  --dataset.repo_id="<HF_USER>/<DATASET_NAME>_v1" \
+  --dataset.repo_id="local/<DATASET_NAME>_v1" \
   --dataset.root=datasets/<DATASET_NAME>_v1 \
   --output_dir=outputs/train/act_snack_in_box \
   --job_name=act_snack_in_box \
@@ -1908,32 +1999,146 @@ lerobot-train \
   --policy.push_to_hub=false \
   --steps=100000 \
   --batch_size=8 \
+  --num_workers=4 \
+  --seed=1000 \
+  --policy.use_amp=false \
   --save_freq=20000 \
   --log_freq=200 \
   --wandb.enable=false \
   --wandb.project=lets-build-robots-s1 \
-  --wandb.disable_artifact=true
+  --wandb.disable_artifact=true 2>&1 | tee -a outputs/logs/act_snack_in_box.log
 ```
 
 **Windows 11 · PowerShell 7.3 或更新版本**
 
 ```powershell
-lerobot-train --policy.type=act --dataset.repo_id="<HF_USER>/<DATASET_NAME>_v1" --dataset.root=datasets/<DATASET_NAME>_v1 --output_dir=outputs/train/act_snack_in_box --job_name=act_snack_in_box --policy.device=cuda --policy.push_to_hub=false --steps=100000 --batch_size=8 --save_freq=20000 --log_freq=200 --wandb.enable=false --wandb.project=lets-build-robots-s1 --wandb.disable_artifact=true
+python -c "from pathlib import Path; Path('outputs/logs').mkdir(parents=True, exist_ok=True)"
+lerobot-train --policy.type=act --dataset.repo_id="local/<DATASET_NAME>_v1" --dataset.root=datasets/<DATASET_NAME>_v1 --output_dir=outputs/train/act_snack_in_box --job_name=act_snack_in_box --policy.device=cuda --policy.push_to_hub=false --steps=100000 --batch_size=8 --num_workers=4 --seed=1000 --policy.use_amp=false --save_freq=20000 --log_freq=200 --wandb.enable=false --wandb.project=lets-build-robots-s1 --wandb.disable_artifact=true 2>&1 | Tee-Object -FilePath outputs/logs/act_snack_in_box.log -Append
+if ($LASTEXITCODE -ne 0) { throw "ACT training failed; inspect the saved log." }
 ```
 
-本次计划为 100,000 步、batch size 8，每 20,000 步保存检查点；W&B 默认关闭。步数持续增加、检查点实际写出，才算训练在正常推进。100,000 步不是判断效果必须等待的门槛，中途检查点也可以评估。
+本次配置为总计 100,000 步、批量大小 8、4 个数据加载进程、随机种子 1000，关闭混合精度、W&B 和模型上传；每 200 步输出日志，每 20,000 步保存检查点。日志同时保存在 outputs/logs/act_snack_in_box.log，供后续绘图。
 
-##### 训练后推理
+判据：训练步数持续增加，日志和检查点实际写出。100,000 步是总目标，任务效果仍需自主试运行确认。出现显存或视频解码错误时，先保留日志并排错。
 
-将命令里的 `<MODEL_DIR>` 替换为完整模型目录。本次默认路径如下；这是路径示例，不是启动命令：
+**暂停与恢复本地训练（按需）**
+
+需要暂停时，看到保存检查点的提示后，等下一条训练进度日志出现，再按 Ctrl+C。保存提示表示开始写盘，Ctrl+C 不会额外保存；最近检查点之后的步数需要重跑。
+
+恢复时先激活原来的环境，确认最近检查点中同时有 pretrained_model 和 training_state，再执行对应系统的命令：
+
+**Linux · Ubuntu 24.04 · Bash**
+
+```bash
+python -c "from pathlib import Path; Path('outputs/logs').mkdir(parents=True, exist_ok=True)"
+set -o pipefail
+lerobot-train \
+  --config_path=outputs/train/act_snack_in_box/checkpoints/last/pretrained_model/train_config.json \
+  --resume=true 2>&1 | tee -a outputs/logs/act_snack_in_box.log
+```
+
+**macOS · Apple Silicon · zsh**
+
+```bash
+python -c "from pathlib import Path; Path('outputs/logs').mkdir(parents=True, exist_ok=True)"
+set -o pipefail
+lerobot-train \
+  --config_path=outputs/train/act_snack_in_box/checkpoints/last/pretrained_model/train_config.json \
+  --resume=true 2>&1 | tee -a outputs/logs/act_snack_in_box.log
+```
+
+**Windows 11 · PowerShell 7.3 或更新版本**
+
+```powershell
+python -c "from pathlib import Path; Path('outputs/logs').mkdir(parents=True, exist_ok=True)"
+lerobot-train --config_path=outputs/train/act_snack_in_box/checkpoints/last/pretrained_model/train_config.json --resume=true 2>&1 | Tee-Object -FilePath outputs/logs/act_snack_in_box.log -Append
+if ($LASTEXITCODE -ne 0) { throw "ACT training failed; inspect the saved log." }
+```
+
+判据：从保存步数恢复权重、优化器和训练状态，继续到原配置总目标 100,000 步，日志追加至原文件。改过输出目录时，同步修改恢复配置路径；缺少 training_state 时不能完整恢复。
+
+##### 云端训练（AutoDL）
+
+选择云端训练的股东从这里开始；已经完成本地训练的股东直接进入第三步。上云前确认代码仓中有完整的 autoDL 文件夹、Python 3.12 和 OpenSSH 客户端；缺少文件时先更新课程代码仓。准备本机 SSH 密钥对，默认使用用户主目录下的 .ssh/id_ed25519 及对应的 .pub 文件，加密私钥需由 SSH Agent 提供。
+
+**保存凭据并查询账号**：注册 AutoDL、完成实名认证，核对余额；进入“控制台 → 账号 → 设置 → 开发者 Token”新建 Token。三个系统使用同一组命令：
+
+```bash
+python autoDL/autodl_act.py auth
+python autoDL/autodl_act.py preflight
+```
+
+在 auth 的隐藏提示中粘贴 Token，已有 Token 文件时跳过 auth。凭据保存在用户主目录下的 .config/autodl/token，不填入训练配置或命令参数；preflight 只查询账号，不租用实例。
+
+**生成配置并预览**：将 `<RUN_NAME>` 换成新的实验名；将 GPU 规格、镜像 UUID、当前 Pro 小时价格、费用上限、总时限和下载预留时间替换为实际值。价格与预算单位为元，时间单位为分钟。GPU 和镜像编号查官方 API 附录或账号私有镜像列表，不照搬其他实例的报价。以下是三个系统通用的单行命令，整段作为 1 次提交：
+
+```bash
+python autoDL/autodl_act.py configure --config="outputs/cloud-configs/<RUN_NAME>.json" --gpu-spec="<GPU_SPEC>" --image-uuid="<IMAGE_UUID>" --dataset-root="datasets/<DATASET_NAME>_v1" --dataset-repo="local/<DATASET_NAME>_v1" --run-name="<RUN_NAME>" --hourly-price-yuan=<HOURLY_PRICE> --max-cost-yuan=<MAX_COST> --max-minutes=<MAX_MINUTES> --retrieve-minutes=<RETRIEVAL_MINUTES> --steps=100000 --save-freq=20000
+```
+
+再预览配置，不启动付费资源：
+
+```bash
+python autoDL/autodl_act.py submit --config="outputs/cloud-configs/<RUN_NAME>.json" --dry-run
+```
+
+判据：数据目录、实验名、训练目标、费用上限和时限与自己的计划一致，余额足够覆盖预算。安装环境、上传、训练和下载都计入时限；本地控制终端在取回结果前保持在线。
+
+**确认后提交**：下面这条会租用付费实例。脚手架会上传并校验固定数据，运行训练，取回结果并检查关停状态；这些真实付费操作尚未完成课程实测。
+
+```bash
+python autoDL/autodl_act.py submit --config="outputs/cloud-configs/<RUN_NAME>.json"
+```
+
+**取回结果并核对资源**：结果保存在 outputs/cloud/实验名称/result/，保留完整 train/checkpoints、run.log、环境记录和校验文件；检查同级 controller.json 中的下载校验、关机与释放状态，再核对控制台和实际账单。下载失败时先保留云端文件，补取并校验后再释放；Pro 系统盘在关机后仍收费，实例释放后才结束后续费用。
+
+需要提前停止时，换入实际实例 ID；关机不会额外保存检查点，也不会释放实例：
+
+```bash
+python autoDL/autodl_act.py stop --instance="<INSTANCE_ID>"
+```
+
+恢复云端训练时，先生成新的实验名称和配置，将 `<RESUME_CHECKPOINT>` 换成已下载的完整检查点目录，目录内须同时有 pretrained_model 和 training_state；再提交：
+
+```bash
+python autoDL/autodl_act.py submit --config="outputs/cloud-configs/<RUN_NAME>.json" --resume-checkpoint="<RESUME_CHECKPOINT>"
+```
+
+#### 第三步：检查训练结果指南
+
+无论选择本地还是云端训练，完成后都要检查已保存结果，无须重新训练。下面的命令以本地输出目录为例；云端训练时，将 outputs/train/act_snack_in_box 换成已下载的 outputs/cloud/实验名称/result/train。三个系统使用同一条命令：
+
+```bash
+python -m json.tool outputs/train/act_snack_in_box/checkpoints/last/training_state/training_step.json
+```
+
+判据：完成本次训练时 step 为 100000；提前中断则按实际保存的步数判断。正常完成后保留 020000、040000、060000、080000、100000 这些完整检查点。pretrained_model 用于自主运行，training_state 用于恢复训练；不要只复制权重文件。
+
+查看曲线前，确认代码仓中有 ACT-1-Pick/plot_training_curve.py，并在已激活环境中安装绘图库。三个系统用同一组命令：
+
+```bash
+python -m pip install "matplotlib>=3.10.3,<4"
+python ACT-1-Pick/plot_training_curve.py --input="outputs/logs/act_snack_in_box.log" --output="outputs/logs/act_snack_in_box-curve.png" --open
+```
+
+输入是已保存的训练日志，输出是生成的 PNG；程序会尝试用默认浏览器打开，也可以直接打开图片。云端结果将输入改为 outputs/cloud/实验名称/result/run.log；使用其他日志名时同步修改输入路径。
+
+判据：图片能显示日志中的训练指标。没有保存日志的旧实验无法补画完整曲线；训练损失下降只表示对示范的拟合改善，不能代替真机任务成功率。
+
+#### 第四步：运行 Rollout 指南
+
+Rollout 是加载训练好的模型，让 Follower 根据相机画面和关节状态自主执行任务。**这是本地与云端训练完成、结果检查通过后的共同最后一步**：在真实工作台上运行 1 次，观察模型能否完成零食入盒。
+
+将 `<MODEL_DIR>` 换成已检查的完整 pretrained_model 目录。默认本地路径与云端下载路径分别如下，这 2 行是路径示例，不是启动命令：
 
 ```text
 outputs/train/act_snack_in_box/checkpoints/last/pretrained_model
+outputs/cloud/<RUN_NAME>/result/train/checkpoints/last/pretrained_model
 ```
 
-确认目录实际存在，包含权重、策略配置和前后处理文件。last 表示最近保存的检查点，不代表最佳模型。先通过离线加载与预测检查，再由操作者启动真机试运行。
+准备：保持同款零食袋、盒子、top 和 wrist 两路机位、方向与分辨率，使用原 Follower 校准。将端口、机械臂 ID 换成自己的值，从稳定 Rest 出发，清空运动范围；准备承托装置，人员守在断电开关旁。自主测试不需要连接 Leader。
 
-**推理命令会让 Follower 自主运动**。相机、校准、任务物体和工作台条件必须与采集时一致，从稳定 Rest 启动，断电开关放在手边；不需要连接 Leader。运行前先确认当前版本的退出、回位和卸力规程，不能把 Ctrl+C 当作保证断电的急停。
+**以下命令会让 Follower 自主运动，由操作者确认后亲自执行**。机械臂退出时会断连并尝试卸力，可能下落，不能把 Ctrl+C 当成断电急停。
 
 **Linux · Ubuntu 24.04 · Bash**
 
@@ -1950,6 +2155,7 @@ lerobot-rollout \
   --fps=30 \
   --duration=45 \
   --inference.type=sync \
+  --return_to_initial_position=false \
   --display_data=true
 ```
 
@@ -1968,15 +2174,259 @@ lerobot-rollout \
   --fps=30 \
   --duration=45 \
   --inference.type=sync \
+  --return_to_initial_position=false \
   --display_data=true
 ```
 
 **Windows 11 · PowerShell 7.3 或更新版本**
 
 ```powershell
-if ($PSVersionTable.PSVersion -lt [version]'7.3') { throw 'Use PowerShell 7.3 or later for camera JSON arguments.' }; $PSNativeCommandArgumentPassing = 'Standard'; $cameras = (Get-Content -ErrorAction Stop cameras.json) -join ' '; lerobot-rollout --strategy.type=base --policy.path="<MODEL_DIR>" --robot.type=so101_follower --robot.port="<FOLLOWER_PORT>" --robot.id="<FOLLOWER_ID>" --robot.calibration_dir=calibration/follower --robot.cameras="$cameras" --task="Pick the snack bag, place it in the snack box, then return empty to the rest pose." --fps=30 --duration=45 --inference.type=sync --display_data=true
+if ($PSVersionTable.PSVersion -lt [version]'7.3') { throw 'Use PowerShell 7.3 or later for camera JSON arguments.' }; $PSNativeCommandArgumentPassing = 'Standard'; $cameras = (Get-Content -ErrorAction Stop cameras.json) -join ' '; lerobot-rollout --strategy.type=base --policy.path="<MODEL_DIR>" --robot.type=so101_follower --robot.port="<FOLLOWER_PORT>" --robot.id="<FOLLOWER_ID>" --robot.calibration_dir=calibration/follower --robot.cameras="$cameras" --task="Pick the snack bag, place it in the snack box, then return empty to the rest pose." --fps=30 --duration=45 --inference.type=sync --return_to_initial_position=false --display_data=true
 ```
 
-Windows 整段作为 1 次提交，使用 PowerShell 7.3 或更新版本；Linux、macOS 的反斜杠后直接换行。Linux 按课程环境核对，macOS 与 Windows 尚未实机验证。
+一次运行 45 秒，目标控制频率 30 Hz。参数 `--return_to_initial_position=false` 关闭程序自动回启动姿态，以便观察空手退回是否由模型完成；它不保证退出后保持末态。45 秒只限制控制循环，不能用作碰撞时的急停，单次推理也可能延迟退出。
 
-命令采用同步推理、30 Hz，自主控制阶段配置为 45 秒；单次推理可能延迟退出，默认结束后还会额外回到启动姿态，**45 秒不是整个运动过程的上限**。程序的额外回位不算策略主动退回 Rest；出现异常运动或碰撞趋势，按已确认的停止规程中止。本命令不会自动记录测试数据集或给出成功率，仍需观察并记录结果。
+判据：记录是否抓起、入盒、松爪并空手返回，记下抓取尝试次数和失败阶段，保留外部录像；base 策略不会自动保存测试视频或计算成功率。任务文字只用于标记，修改它不会让 ACT 学会新任务。一次完成只说明当前布置下能执行；结束后按 EP8 收尾，不同位置和光照的系统测试留到后续测试节目。
+
+### EP14 · ACT 篇：验收与边界测试
+
+<!-- EP14 本次修订：2026-10-19。依据本集实拍口播及课程 14-test-act.zh.md；课程细项归并为四个核心考察点，不将演示写成统计成绩。 -->
+
+**主要内容**
+
+用 EP13 训练好的 ACT 策略完成零食入盒，再从任务完成与重复执行、起点及朝向变化、终点变化、缺物与执行中干扰四个方面考察表现。通过移动零食、改变盒子位置、移走并放回物品，观察机械臂会继续执行、调整动作，还是出现抖动或抓取困难。
+
+**注意事项**
+
+- 沿用同一检查点、机位、校准和执行设置，一次只改变一种条件，保留连续录像。
+- 起点和终点都选在机械臂可达、相机可见且路径安全的范围内，不用够不到的位置测试抓取能力。
+- 执行中移物只在现场操作条件允许时开展。人员不进入运动区，不接触夹爪、不拉扯夹持物；条件不足就不做该项。
+- 一次演示只说明该次布置下的表现。没有做过的项目不填成绩，抓空后的重试、人工帮助和程序退出后的复位分别记录。
+
+#### 开始前：固定条件与完成标准
+
+沿用 EP13“第四步：运行 Rollout 指南”的命令，先核对策略目录、端口、机械臂 ID 和两路相机。记录检查点、零食与盒子的初始位置、起始姿态、控制频率及实际执行参数，测试中保持不变。
+
+先看零食是否整包进入盒内并松夹，再单独记录策略是否自行空手回位、完成后能否保持结果。程序退出后的复位不算策略自行回位；物品原本就在盒内，也不算完成了一次搬运。
+
+#### 四个核心考察点
+
+##### 一、任务完成与重复执行
+
+先按训练时的布置做一次正常抓放，观察接近、闭爪、抬起、搬运、入盒和松夹。正常完成后，在策略持续运行的情况下把零食放回起点，观察能否再次抓放；重新启动程序后的成功另算一次试验。
+
+| 推荐考察内容 | 观察重点 |
+|---|---|
+| 正常抓放 | 零食是否整包入盒、夹爪是否松开，失败发生在哪一步 |
+| 放回零食，再次抓放 | 是否重新接近并完成搬运，是否需要重启或人工帮助 |
+| 完成后继续观察 | 是否保持结果，是否再次抓取或破坏已经完成的状态 |
+
+本集演示了正常抓放和放回后的重复执行。股东测试时，同时记下尝试次数与回位情况，避免只保留最后成功的一段。
+
+##### 二、起点及朝向变化
+
+盒子和机位不变，先只移动零食，再恢复原位置只改变朝向，分开观察位置和朝向对抓取的影响。
+
+| 推荐考察内容 | 观察重点 |
+|---|---|
+| 原采集范围内换一个位置 | 是否找到新的抓取位置，还是仍向原位置接近 |
+| 原位置旋转 90°、180° | 接近方向、夹取部位是否变化，是否抓空或滑落 |
+| 新位置保持原朝向 | 能否在未采集过的具体位置完成抓放，失败发生在哪一阶段 |
+
+本集尝试了把零食放远一些和改变朝向。没有采集前隔离记录的位置，记为“新选位置”，不称为独立留出位置。
+
+##### 三、终点变化
+
+零食起点不变，在启动前改变盒子的位置或朝向，观察机械臂是否把零食送往新的盒口。
+
+| 推荐考察内容 | 观察重点 |
+|---|---|
+| 启动前平移盒子 | 实际投放点是否跟随盒口变化，还是仍在原位置松夹 |
+| 启动前旋转盒子 | 是否适应新的盒口方向，零食是否完整留在盒内 |
+
+本集演示中，盒子平移和横放后仍出现了完成抓放的情况。这些演示用于寻找可进一步测试的条件，不能据此推断盒子放到任意位置都能成功。
+
+##### 四、缺物与执行中干扰
+
+分别测试启动前缺物和运行中缺物，零食、盒子各做一组。两类情况发生的时机不同，分开记录，尤其留意盒子消失后是否连夹取零食也受到影响。
+
+| 推荐考察内容 | 观察重点 |
+|---|---|
+| 启动时没有零食 | 是否保持、抖动、空抓或继续搬运，随后放回零食会怎样 |
+| 启动时没有盒子 | 是否仍抓起零食，夹起后送往哪里、在哪里松夹 |
+| 接触前移走零食 | 是否仍在原位置闭爪，抓空后是否改变动作 |
+| 搬运阶段移走盒子 | 是否继续去原盒口，是否出现停滞、抖动或夹持变化 |
+| 放回被移走的物品 | 是否恢复动作，恢复时是否重启过程序或提供过帮助 |
+
+本集在开始时拿走盒子，观察到机械臂仍把零食放向原来的位置；运行中拿走盒子后，又观察到抖动和夹取困难，放回后恢复了抓取。记录这些不同反应，比直接判断“它理解了盒子”更有助于后续比较。
+
+#### 记录结果与继续测试
+
+每项保留初始布置照片和连续录像，按下面的内容做简短记录。完成情况、干预后的行为和停止原因分别填写，不把缺物观察混入正常入盒的成功率。
+
+| 记录项目 | 填写内容 |
+|---|---|
+| 试次与模型 | 日期、试次编号、检查点、执行设置 |
+| 改变的条件 | 零食和盒子的位置、朝向，缺物或移物的时机 |
+| 实际动作 | 抓取、搬运、松夹、回位，以及抖动、抓空或滑落 |
+| 结果与干预 | 是否入盒、尝试次数、人工帮助、是否重启、停止原因 |
+| 录像 | 文件名与对应时间段 |
+
+先按这四个方面完成一轮，再根据失败阶段选择下一项测试。后续比较 ACT、SmolVLA、π₀.₅ 或 VLM 控制时，尽量复用相同的物品、位置和记录方法。出现异常抖动、卡滞或碰撞趋势时，按 EP13 的退出规程停止，运动停止后再整理物品。
+
+<!-- EP15-1 来源与核验日期：2026-10-21。
+本集事实修正版口播、说明卡及发布文案；ACT 原论文 IV-A（https://arxiv.org/html/2304.13705v1）；
+LeRobot v0.6.1 configuration_act.py、modeling_act.py：
+https://github.com/huggingface/lerobot/blob/v0.6.1/src/lerobot/policies/act/configuration_act.py
+https://github.com/huggingface/lerobot/blob/v0.6.1/src/lerobot/policies/act/modeling_act.py
+状态与观测、马尔科夫策略定义核对 Stanford CS234 lecture2 与 Spaan POMDP 章节；不把单帧输入当成环境满足马尔科夫性质的证明。
+-->
+
+### EP15-1 · ACT的决策逻辑
+
+**主要内容**
+
+本集从输入与输出理解 ACT（Action Chunking with Transformers，使用 Transformer 预测动作块的方法）：摄像头画面和机械臂关节状态输入网络，网络一次预测一段未来动作，再由执行程序逐步发送。结合零食入盒，区分马尔科夫策略与当前观测，说明动作块、可选的时序集成，以及物品或盒子移动后可能出现的不稳定表现。
+
+**注意事项**
+
+- 当前观测不一定包含完整状态，单张画面可能缺少速度等信息。
+- 本集网络单次推理读取当前观测；执行程序还可能保留动作队列或过去的预测。
+- 一次预测多少步、实际执行多少步、是否启用时序集成，是不同设置。
+- 动作目标是模型给出的指令，是否真正到位还要读取关节反馈。
+- 扰动后可能出现不稳定动作，不能仅凭画面变化判断必然抖动，也不能据此断言 ACT 无法完成复杂任务。
+
+#### 输入与动作块辨认指南
+
+目的：分清送进模型的内容、模型预测的动作，以及机械臂实际执行的结果。
+
+| 环节 | 本集对应的内容 | 核对重点 |
+|---|---|---|
+| 视觉输入 | 俯视与腕部摄像头画面 | 两路视角和训练时的名称、方向一致 |
+| 关节输入 | 当前各关节状态 | 用实际读数，不用上一条目标代替 |
+| 动作块 | 一段未来时刻的各关节目标动作 | 一次网络预测包含多步动作 |
+| 执行反馈 | 实测关节状态与相机画面 | 目标动作不等于已经完成的运动 |
+
+做法：先在 EP11 的模型输入预览中辨认两路画面，再对照 EP13 保存的模型配置，确认输入名称和动作维度。这里只读已有记录，无需让机械臂运动。
+
+判据：能指出当前观测、预测动作块和实测结果各是什么，不把“网络输出了目标”写成“机械臂已经到位”。
+
+#### 马尔科夫策略辨认指南
+
+马尔科夫策略（Markov policy）依据当前状态选择动作，不再单独依赖完整历史。关键在于当前状态是否包含决策所需的信息；摄像头的一帧观测未必能做到这一点。
+
+本集的两球例子中，球处在相同位置时，可以具有不同速度，因此接下来的运动也可能不同。单张位置图看不出速度，需要补充速度信息，或结合多帧估计。它说明的是观测缺少信息，不能据此说球本身“不符合马尔科夫性质”。
+
+判据：解释本集 ACT 时，写“网络单次推理读取当前观测并预测动作块”；不从“只读当前画面”推出“当前观测就是完整的马尔科夫状态”。
+
+#### 动作块与时序集成核对指南
+
+动作块是一次预测得到的一段未来动作。LeRobot v0.6.1 的执行程序提供两种路径：未启用时序集成时，先把指定数量的预测动作放入队列，逐步取出，队列耗尽后再预测；启用时序集成（Temporal Ensembling）时，持续获得新的动作块，把多次预测中对应同一目标时刻的动作加权融合后执行。
+
+| 配置字段 | 含义 | 核对方法 |
+|---|---|---|
+| n_obs_steps | 一次推理读取的观测步数 | 本集使用 1 步观测 |
+| chunk_size | 一次预测的动作步数 | 查看实际检查点配置 |
+| n_action_steps | 一次预测后取出执行的动作步数 | 可以少于预测步数，不超过动作块长度 |
+| temporal_ensemble_coeff | 时序集成的权重参数 | null 表示未启用；非空时还要核对配套约束 |
+
+本集保存的训练检查点为 chunk_size=100、n_action_steps=100、temporal_ensemble_coeff=null。若运行时没有覆盖参数，对应动作队列路径；讲解时序集成机制不代表这次运行已启用它。LeRobot v0.6.1 启用时序集成时要求 n_action_steps=1，实际运行还要核对启动参数。
+
+判据：能从模型配置和启动参数说明实际采用哪条执行路径；时序集成融合同一时刻的预测，不把不同未来时刻的动作混在一起平均。
+
+#### 扰动后的观察与记录指南
+
+目的：将“看到抖动”与“判断抖动原因”分开记录。
+
+复用 EP14 的固定条件，一次只改变一个条件。保留连续录像，记录改变时刻、机械臂反应与恢复情况；有日志时，对照预测目标、实测关节、动作发送频率和执行方式。出现异常运动时，按 EP13 的退出规程停止。
+
+扰动可能让输入偏离训练分布，动作块切换与控制执行也会影响稳定性。时序集成可缓解部分不连续，不能保证消除抖动；没有对应记录时，不能把可能原因写成已查明的结论。
+
+<!-- EP15-2 来源与核验日期：2026-10-25。
+依据本集发布版口播、动态课件和01:39–01:51视觉预训练补注；
+LeRobot v0.6.1 ACT 配置与实现：
+https://github.com/huggingface/lerobot/blob/v0.6.1/src/lerobot/policies/act/configuration_act.py
+https://github.com/huggingface/lerobot/blob/v0.6.1/src/lerobot/policies/act/modeling_act.py
+课程代码仓 README 锁定 Python 3.12、LeRobot 0.6.1；开头硬件提交沿用原链接表7629d2a。
+只写训练机制和阅读记录的方法，不把教学地形或三轮局部算例称为完整ACT训练实测。
+-->
+
+### EP15-2 · ACT模型的训练与优化
+
+**主要内容**
+
+从一份示范中取出当前图像、关节状态和后续动作，让 ACT 先预测，再与示范比较得到 Loss，通过反向传播和优化器调整参数。训练反复进行，模型逐渐学会当前任务；最后还要用未参与训练的数据和真实执行，检查它在新情况中的表现。
+
+**注意事项**
+
+- Loss 低说明预测更接近用于比较的示范，不等于机械臂一定完成任务。
+- “尚未学会任务”不代表整个网络都是随机的：看图的部分可以先用已有的视觉知识。
+- 反向传播负责算梯度，优化器负责更新参数；每个小批次的 Loss 都可能波动。
+- 教学沟壑图帮助理解局部下降，不是完整 ACT 参数空间的实际地形。
+
+#### 读懂动作误差与完整 Loss
+
+示范记录了在当前观测之后，人实际给出了哪些动作。训练时拿它作为目标，与模型预测的一段未来动作比较；这里的“答案”是示范动作，不是模型已经执行后的实测关节反馈。
+
+例如，某个关节预测 20 度，示范为 15 度，绝对差为 5 度；预测变成 18 度后，差缩小到 3 度。完整动作误差会汇总多个关节、多个时刻；数据归一化后，日志中的 Loss 数值不能直接当作“平均差几度”。
+
+采用 CVAE 的 ACT，完整训练 Loss 包含动作重建误差和 KL 约束项，可记成“动作重建误差 + 权重 × KL”。动作部分要求预测接近示范；KL 部分约束潜变量的分布，使它接近预设的标准正态分布。
+
+CVAE 是条件变分自编码器，用来在训练中表示示范动作的差异；它不是负责看图的视觉编码器。KL 也不是另一种关节角度误差。看训练曲线时，先确认显示的是总 Loss、动作误差还是 KL 项。
+
+<h4>图 1　ACT 训练与优化：从示范到参数更新</h4>
+〔配图：训练与优化总览.svg〕
+<p style="font-size:9.5pt; line-height:1.5;">上方复用节目课件，展示共享视觉骨干、Transformer、训练后验及梯度回传；下方串起训练步骤。角度与 0.311 为局部动作头教学算例，不是完整 ACT 的实测训练总 Loss。</p>
+
+#### 从预测到参数更新
+
+顺着图 1 读一轮训练：左侧是同一个时刻的两路图像和关节读数，下方的后续示范动作作为训练目标。ResNet-18 提取图像特征，Transformer 融合观测并预测未来动作，右侧把预测与示范放在同一基准上比较。
+
+- 前向计算沿实线走，得到预测和 Loss；此时只是用参数算结果，参数尚未更新。
+- 反向传播沿虚线回算梯度，找到哪些可训练参数影响了误差；算出梯度也不等于已经改了参数。
+- 优化器读取梯度，再更新权重和偏置。用相同输入再预测，可以观察更新效果；正式训练继续从数据集中取后续批次。
+
+图中的训练后验编码器会读取示范动作，产生潜变量 z；这一训练分支不能当成实际推理时也知道未来动作。自主运行不读取未来示范，LeRobot 0.6.1 的 ACT 推理将 z 设为零。图中的 W、b 用来概括可训练参数，不表示整个网络只有一组权重和偏置。
+
+| 一轮训练 | 具体做什么 |
+|---|---|
+| 取样 | 从示范中取一批当前观测和后续动作 |
+| 前向计算 | 用当前参数预测动作块，计算训练 Loss |
+| 反向传播 | 计算各个可训练参数改变一点，会怎样影响 Loss |
+| 优化更新 | 优化器根据梯度和学习率，更新权重、偏置等参数 |
+| 再次训练 | 用更新后的参数处理后续批次，继续比较与更新 |
+
+梯度指出局部上升最快的方向，沿负梯度方向可以尝试降低 Loss；学习率影响一步更新多大。课程使用的 AdamW 还会利用历史梯度调整更新，不是只根据当前坡度迈固定一步。
+
+小批次让每次计算更省资源，但每批抽到的数据不同，Loss 不保证逐步下降，也不保证与全量训练走完全相同的路线。训练时看一段时间的趋势，并结合验证与执行结果；不追求把训练 Loss 无限制压到零。
+
+#### 图 2　梯度下降：沟壑、方向与步长
+
+〔配图：梯度下降与沟壑.svg〕
+
+图 2 将参数组合与 Loss 的关系压缩成可看见的地形：平面位置代表参数的不同取值，高度代表误差大小。曲面上有多座山峰和低谷，红线展示沿局部梯度下降的过程；走到一个低谷，不代表找到了所有参数组合中的最低点。
+
+梯度告诉我们附近往哪个方向上升最快，负梯度给出尝试下山的方向。一步迈多大，还取决于学习率和优化器。步子过大可能越过低谷、来回振荡，过小则需要更多次更新；一次下降后，下一次还要重新计算当前位置的梯度。
+
+这张沟壑图采用独立函数与数值梯度下降，只解释局部方向、步长和低谷；ACT 实际参数更多，并使用 AdamW。图上的 30 步、红线形状和地形高度，不对应这次 ACT 的实际训练步数、参数轨迹或 Loss 日志。
+
+#### 视觉预训练与任务学习
+
+ResNet-18 负责把图像变成视觉特征。它可以先用 ImageNet 图片学会一些看图的能力，再跟着 Transformer 一起学习机械臂任务；看懂部分图像特征，不代表已经知道怎样把零食放进盒子。
+
+LeRobot 0.6.1 的 ACT 默认加载 ResNet-18 的 ImageNet 预训练权重，并在训练中继续优化视觉骨干。课件中的“共享权重”另指俯视与腕部两路图像使用同一套视觉骨干参数；“从哪里初始化”与“两路是否共用参数”是两个问题。
+
+#### 用新数据与实际执行检查泛化
+
+| 数据或测试 | 用来判断什么 |
+|---|---|
+| 训练集 | 参与参数更新，观察模型是否学得动 |
+| 验证集 | 不参与梯度更新，用来比较检查点和调整训练方案 |
+| 测试集 | 留到方案确定后评估，不反复拿它调参数 |
+| 真实执行 | 换未参与训练的位置或布置，观察抓取、搬运与松夹是否完成 |
+
+有示范答案的验证集或测试集仍然可以计算 Loss。机械臂自主运行时，通常没有每一步对应的标准动作，不能像训练一样直接计算同一种监督 Loss，要记录任务完成情况与失败过程。
+
+同一段示范的相邻帧很相似，划分数据时优先按完整回合或采集条件分组，避免相邻帧分到训练和测试两边。这个片段没参与训练，不代表它与训练场景有足够差别。
+
+训练 Loss 很低而新场景表现变差，可能出现了过拟合，也可能是相机、物品或执行设置发生变化。先核对输入与配置，再按 EP14 的方法一次改变一个条件，记录模型检查点、布置、完成情况、人工干预和录像。若没有实际划分验证集或测试集，就不能把训练曲线写成独立泛化评估。

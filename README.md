@@ -6,17 +6,17 @@
 
 > **English** — This repository is the Chinese edition, written for Chinese-speaking users; the plugin answers in Chinese. The English edition is `Yanshi-Robotics/yanshifu-plugin`. It is coming soon and is not open yet.
 
-一个 DeepSeek Harness 插件，装上多**三个技能**：`/yanshifu` 是陪你把这季 SO-101 做出来的开发搭子，`/yanshifu ask`（或 `/ask`）只查资料，`/yanshifu update`（或 `/update`）把资料更新到最新一集。
+一个 DeepSeek Harness 插件，装上**三个技能**：`/yanshifu` 是陪你把这季 SO-101 做出来的开发搭子，`/yanshifu ask`（或 `/ask`）只查资料，`/yanshifu update`（或 `/update`）把资料更新到最新一集。
 
 ## 这是什么
 
 跟着《一起手搓机器人》第一季做 SO-101，卡点很少是「不知道那句话怎么念」，多半是「我这台机器现在这一步过不去」。所以这个插件分三块：
 
-**`yanshifu` · 机器人开发增强。** 加载后先做三件事：问清你的课程仓 clone 在哪个目录（确认过的路径记在 `~/.yanshifu/project.json`，下次直接拿出来问你是不是还在那儿）；用只读探针扫一遍你的项目，看环境、校准、遥操日志、相机配置、数据集、训练产物，判断你做到哪一步；然后报一句「你现在到 EP<N>，下一步是这个，要不要现在做」。之后它按你实际卡住的地方干活：读你的代码与日志、跑不碰硬件的离线程序（仓里的 `tests/`、`ACT-1-Pick/offline_eval.py` 这类）、把要跑的命令写清楚交给你。碰真实硬件的命令（开相机、占串口、给电机上电）它只写不跑，那是你的手。
+**`yanshifu` · 机器人开发增强**。 加载后先做三件事：问清你的课程仓 clone 在哪个目录（确认过的路径记在 `~/.yanshifu/project.json`，下次直接拿出来问你是不是还在那儿）；用只读探针扫一遍你的项目，看环境、校准、遥操日志、相机配置、数据集、训练产物，判断你做到哪一步；然后报一句「你现在到 EP<N>，下一步是这个，要不要现在做」。之后它按你实际卡住的地方干活：读你的代码与日志、跑不碰硬件的离线程序（仓里的 `tests/`、`ACT-1-Pick/offline_eval.py` 这类）、把要跑的命令写清楚交给你。碰真实硬件的命令（开相机、占串口、给电机上电）它只写不跑，那是你的手。
 
-**`ask` · 资料速查。** 只从四份资料里找答案：BOM 与参考价、三种舵机后缀怎么分、电脑够不够跑某个模型、装配接线、切片设置、模型选型、更新到第几集。这一块不看你的项目，就是查得快、答得准、编不出来就说没有。
+**`ask` · 资料速查**。 只从四份资料里找答案：BOM 与参考价、三种舵机后缀怎么分、电脑够不够跑某个模型、装配接线、切片设置、模型选型、更新到第几集。这一块不看你的项目，就是查得快、答得准、编不出来就说没有。
 
-**`update` · 资料更新。** 查最新一集是第几集、你手上这份到第几集：一样就说已经是最新，落后就把正文装上，查不到就说查不到。
+**`update` · 资料更新**。 比较资料版本号与完整集号，支持 EP15-2 这样的分集，也能识别同一集的资料修订；落后就更新知识文件，查不到或版本冲突时会说明原因。
 
 ```text
 /yanshifu                  看你做到哪一步，下一步做什么
@@ -27,6 +27,14 @@
 它手边有三个来源：**你的项目**、**偃师傅的公开仓**（课程仓 `Lets-Build-Robots-S1-SO101`、`lerobot-doctor`、`lerobot-remote-inference`）、以及**四份速查资料**。资料是手边的参考书，不是边界。
 
 答案用中文，因为资料和读者都是中文的。插件本身不含宿主代码，只挂技能目录。
+
+## v0.5.0：资料更新至 EP15-2
+
+四份配套资料已同步，包含 EP13 训练与结果检验、EP14 验收与边界测试、EP15-1 ACT 决策逻辑、EP15-2 ACT 训练与优化。更新器会比较资料版本号和完整集号，同一集内的修订也能检测到。
+
+从 v0.4.4 或更早版本升级，**请重新安装一次完整插件**。 `/yanshifu update` 只替换配套资料，不会更新技能规则和更新器脚本；只运行它仍可能保留“EP13 预告”的旧指引。
+
+按下方安装提示词重新安装后，核对包版本为 0.5.0，技能列表有 yanshifu、ask、update，资料进度为 EP15-2。使用本仓安装脚本的用户，可在新版仓库中运行 `python3 scripts/install.py --host <原宿主> --force`；原技能目录会先备份。
 
 ## Quick Install Prompt · 安装用的提示词
 
@@ -59,11 +67,11 @@ https://github.com/Yanshi-Robotics/yanshifu-plugin-cn/releases/latest/download/y
 两个宿主的额外条件，装之前先知道：
 
 - **Codex 的 skills 是实验特性，默认关着**。要在 `~/.codex/config.toml` 的 `[features]` 下加 `skills = true` 再重启；`install.py --host codex --enable-codex-skills` 可以替你改（改前备份 `config.toml`）。它还**跳过符号链接**，所以给它装的时候一律是复制，不是软链。
-- **Codex 只读 `~/.codex/skills/`**，不读 `~/.agents/skills/`；**Kimi 与 DSH 两个根都读**，所以 `--host agents` 一次能顶两个。
+- Codex 只读 `~/.codex/skills/`，不读 `~/.agents/skills/`；Kimi 与 DSH 两个根都读，所以 `--host agents` 一次能顶两个。
 
 `install.py` 的别开关：`--list-targets` 看准备装到哪、`--dry-run` 演练、`--force` 覆盖已存在的（旧的先备份成 `.bak-<时间戳>`）、`--link` 用软链（Codex 会退回复制）。
 
-> ⚠️ 精度说明：这里只有 DSH 这条路是作者实测过的（本机 DSH 跑通）；Codex 与 Kimi 的装法与叫法照各自的官方文档写，作者还没在真机上验过。谁先验了谁改这一行。
+> 验证范围：这里只有 DSH 这条路是作者实测过的（本机 DSH 跑通）；Codex 与 Kimi 的装法与叫法照各自的官方文档写，作者还没在真机上验过。谁先验了谁改这一行。
 
 ## 快速开始
 
@@ -75,7 +83,7 @@ dsh plugin --profile web add github:Yanshi-Robotics/yanshifu-plugin-cn
 
 机器上要有 `git`，包是直接从仓库拉的。让助手代劳也行，但管插件的工具默认只在 Creator 预设里打开，普通会话里它就是替你跑上面这条命令。
 
-**GitHub 慢或者连不上的话**，改装 release 里的 tarball：69 kB，不用克隆整个仓库，而且是从 GitHub 自己的 release 托管上取的：
+**GitHub 慢或者连不上的话**，改装 release 里的 tarball，不用克隆整个仓库，而且是从 GitHub 自己的 release 托管上取的：
 
 ```bash
 dsh plugin --profile web add https://github.com/Yanshi-Robotics/yanshifu-plugin-cn/releases/latest/download/yanshifu-plugin-cn.tgz
@@ -83,7 +91,7 @@ dsh plugin --profile web add https://github.com/Yanshi-Robotics/yanshifu-plugin-
 
 优先用这条，别用第三方的 GitHub 加速站：加速站夹在你和 GitHub 中间，能给你换成别的内容；上面这个包直接从 GitHub 取，校验和随 release 一起公布。
 
-**仓名带语言。** 这个仓以 `-cn` 结尾，专门给中文用户；英文版是 `yanshifu-plugin`，还没开放。各装各的，不用装两个。
+**仓名带语言**。 这个仓以 `-cn` 结尾，专门给中文用户；英文版是 `yanshifu-plugin`，还没开放。各装各的，不用装两个。
 
 然后直接用，带不带斜杠都行：
 
@@ -185,8 +193,8 @@ skills/
 - 知识是快照，出新一集要重新发一版。这是有意的：助手会说自己这份资料到第几集，不装作是实时的。
 - 不打包图片和 PDF。答案要配图时会说明，并指向资料里对应的那一节。
 - 只答中文。
-- ⚠️ 后两个技能的名字就叫 `ask` 与 `update`，短是短，但别家插件也可能起同名：真撞上了（技能列表里出现两个同名的），用 `/yanshifu ask`、`/yanshifu update` 一定进的是这两个。
-- **默认只读**：不改你仓里的文件，要改先问；⛔ 不代跑碰真实硬件的命令（开相机、占串口、上电），只把命令写清楚。
+- 后两个技能的名字就叫 `ask` 与 `update`，短是短，但别家插件也可能起同名：真撞上了（技能列表里出现两个同名的），用 `/yanshifu ask`、`/yanshifu update` 一定进的是这两个。
+- **默认只读**：不改你仓里的文件，要改先问；不代跑碰真实硬件的命令（开相机、占串口、上电），只把命令写清楚。
 - 进度判断靠 `project-scan.py`，它要机器上有 `python3`（3.10 以上）；扫的是产物，不是结论，报出来会先问你「对不对」。
 - 确认过的项目路径记在 `~/.yanshifu/project.json`，只存路径和确认时间；不想要就 `project-scan.py forget`。
 - 以这四份资料与偃师傅的公开仓为准；两处都没有的直说没有，不编。
